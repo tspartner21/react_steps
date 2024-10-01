@@ -1,17 +1,19 @@
 import { FaEnvelope, FaInstagramSquare, FaYoutube } from "react-icons/fa";
+import {Link} from 'react-router-dom';
+
 export default function Header() {
   return (
     <header className='header'>
      <h1>
-        <a href='/'>ALPACO</a>
+        <Link to={'/'}>ALPACO</Link>
      </h1>
      <nav>
         <ul className="gnb">
-            <li><a href="/members">MEMBERS</a></li>
-            <li><a href="/gallery">GALLERY</a></li>
-            <li><a href="/youtube">YOUTUBE</a></li>
-            <li><a href="/contact">CONTACT</a></li>
-            <li><a href="posts">POSTS</a></li>
+            <li><Link to={'/members'}>MEMBERS</Link></li>
+            <li><Link to={'/gallery'}>GALLERY</Link></li>
+            <li><Link to={'/youtube'}>YOUTUBE</Link></li>
+            <li><Link to={'/contact'}>CONTACT</Link></li>
+            <li><Link to={'posts'}>POSTS</Link></li>
         </ul>
 
         <ul className="sns">

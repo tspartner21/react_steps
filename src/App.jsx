@@ -9,8 +9,12 @@ import Youtube from "./components/sub/Youtube";
 import { Route, Routes } from "react-router-dom";
 
 export default function App() {
+
+
 	return (
+		
 				<>
+			
 			
 				<Header/>
 
@@ -24,9 +28,12 @@ export default function App() {
 					<Route path='/posts' element={<Posts/>}/>		
 				</Routes>
 
+
 				<Footer/>
 
 				</>		
 			
 	);
 }
+
+
