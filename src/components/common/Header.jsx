@@ -7,11 +7,11 @@ export default function Header() {
      </h1>
      <nav>
         <ul className="gnb">
-            <li><a href="#">MEMBERS</a></li>
-            <li><a href="#">GALLERY</a></li>
-            <li><a href="#">YOUTUBE</a></li>
-            <li><a href="#">CONTACT</a></li>
-            <li><a href="#">POSTS</a></li>
+            <li><a href="/members">MEMBERS</a></li>
+            <li><a href="/gallery">GALLERY</a></li>
+            <li><a href="/youtube">YOUTUBE</a></li>
+            <li><a href="/contact">CONTACT</a></li>
+            <li><a href="posts">POSTS</a></li>
         </ul>
 
         <ul className="sns">

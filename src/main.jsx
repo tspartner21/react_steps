@@ -4,6 +4,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 //루트 컴포넌트에 적용할 전체 스타일 파일
 import "./styles/index.scss";
+import { BrowserRouter } from "react-router-dom";
 
 //App이라는 마스터 컴포넌트 내용을 돔형태로 구현해서 index.html의 #root요소안에 넣어주는 기능
-ReactDOM.createRoot(document.getElementById("root")).render( <App />);
+ReactDOM.createRoot(document.getElementById("root")).render( 
+<BrowserRouter>
+    <App />
+</BrowserRouter>);
+
