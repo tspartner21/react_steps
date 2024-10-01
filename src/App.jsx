@@ -1,10 +1,18 @@
+import { BtnA, BtnB } from './Btn';
+import List from './List';
+import Title from './Title';
+
+
 function App() {
 	return (
-		<div>
-			<h1 className='abc' style={{ color: 'red' }}>
-				Hello
-			</h1>
-		</div>
+				<>
+			
+					<Title/>
+					<List />
+					<BtnA />
+					<BtnB />
+				
+				</>
 	);
 }
 
