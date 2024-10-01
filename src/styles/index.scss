@@ -1,3 +1,10 @@
-.tit{
-    color : aqua;
-}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+//common
+@import './common/reset';
+@import './common/header';
+@import './common/footer';
+
+//main
+@import './main/home';
+

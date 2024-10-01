@@ -1,0 +1,34 @@
+.header{
+    width:100%;
+    padding : 30px 15vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+
+    h1{
+        font : 700 1.2rem/1 'orbitron';
+        color : #333;
+        letter-spacing : 1px;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        gap : 100px;
+        
+        .gnb {
+            display: flex;
+            gap : 100px;
+            font : 600 0.8rem/1 'raleway';
+            color : #555;
+
+        }
+        .sns{
+            display: flex;
+            font-size : 1rem;
+            color : #888;
+            gap : 20px;
+
+        }
+    }
+}
