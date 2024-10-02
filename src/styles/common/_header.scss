@@ -14,13 +14,17 @@
     nav {
         display: flex;
         align-items: center;
-        gap : 100px;
+        gap : 70px;
         
         .gnb {
             display: flex;
-            gap : 100px;
+            gap : 50px;
             font : 600 0.8rem/1 'raleway';
-            color : #555;
+            color : #888;
+
+            li.on{
+                color : #000;
+            }
 
         }
         .sns{
@@ -29,6 +33,24 @@
             color : #888;
             gap : 20px;
 
+        }
+    }
+
+    .btnMenuToggle{
+        font-size : 1.2rem;
+        color : #333;
+        display: none;
+
+    }
+}
+
+@media screen and (max-width : $tablet){
+    .header{
+        nav{
+            display : none;
+        }
+        .btnMenuToggle{
+            display: block;
         }
     }
 }
