@@ -1,0 +1,118 @@
+.members{
+    .ceoBox {
+        width : 100%;
+        display: flex;
+        flex-wrap: flex;
+        justify-content: space-between;
+        margin-bottom: 150px;
+        //위하백패칼 /디플저얼
+
+        .txt {
+            width : 45%;
+            display : flex;
+            flex-wrap :  wrap;
+            justify-content: flex-end;
+            align-content: flex-end;
+            padding-bottom: 100px;
+            font-family: 'raleway';
+
+            h2{
+                width : 100%;
+                text-align : right;
+                font-size : 2.4rem;
+            }
+            p {
+                width : 100%;
+                text-align: right;
+                font-size: 1.6rem;
+            }
+        }
+        .pic{
+            width : 50%;
+            height : 65vh;
+            overflow: hidden;
+            img{
+                width : 100%;
+                height : 100%;
+                object-fit : cover;
+            }
+        }
+    }
+}
+
+.memberListbox{
+    width  :100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .titBox{
+        width : 70%;
+
+        h2{
+            font : 600 2rem/1 'orbitron';
+            color : #444;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        p{
+            font : 300 1rem/1.2 'raleway';
+            color : #666;
+            margin-bottom: 20px;
+        }
+    }
+    ul {
+        width : 65%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        li {
+            width : 32%;
+            margin-bottom: 70px;
+            .pic {
+                width : 100%;
+                height: 15vw;
+                margin-bottom: 20px;
+
+                img {
+                    width : 100%;
+                    height: 100%;
+                    object-fit : cover;
+                }
+            }
+
+            .txt {
+                h2{
+                    font : 700 1rem/1 'raleway';
+                    margin-bottom : 10px;
+
+                }
+                p{
+                    font-size : 0.6rem;
+                }
+            }
+        }
+    }
+    .decBox{
+        width : 28%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        padding-bottom: 300px;
+        
+        h2{
+            font : 500 1.4rem/1 'orbitron';
+            color : #333;
+            margin-bottom: 20px;
+        }
+        p{
+            font : 300 0.8rem/1.2 'raleway';
+   
+            line-height: 1.3;
+            color : #777;
+            word-break: break-all; //네모칸 형태로 배치
+        }
+    }
+
+}
