@@ -1,25 +1,21 @@
-import Layout from "../common/Layout";
+import Layout from '../common/Layout';
 import memberData from '../../data/memberData';
+import Pic from '../common/Pic';
 
-export default function Members(){
-    // console.log(memberData);
-    return(
-       <Layout title={'MEMBERS'}>
-        
-        <article className="ceoBox">
-            <div className="txt">
-                <h2>{memberData[0].name}</h2>
-                <p>{memberData[0].position}</p>
-                
-            </div>
-            <div className='pic'>
-                <img src={'/' + memberData[0].pic} alt={memberData[0].name}/>
-            </div>
-        </article>
+export default function Members() {
+	return (
+		<Layout title={'MEMBERS'}>
+			<article className='ceoBox'>
+				<div className='txt'>
+					<h2>{memberData[0].name}</h2>
+					<p>{memberData[0].position}</p>
+				</div>
+				<Pic className='pic' src={'/' + memberData[0].pic} />
+			</article>
 
         {/* //첫번째 순번의 데이터가 아닐때에만 반복 출력 */}
-        <article className="memberListbox">
-            <div className="titBox">
+        <article className='memberListBox'>
+            <div className='titBox'>
                 <h2>Our Team Members</h2>
                 <p>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora possimus non ipsa cum. Veritatis, dolore
@@ -32,9 +28,11 @@ export default function Members(){
                 if(idx !== 0){
                     return (
                         <li key={idx}>
-                            <div className="pic">
+                            {/* 이미지 컴포넌트 호출 후 src에 이미지 url값 전달, pic 클래스에는 이미지의 크기정도만 지정 */}
+                            <Pic src={member.pic} className='pic' shadow={true}/>
+                            {/* <div className="pic">
                                 <img src={'/'+member.pic} alt={member.name}/>
-                            </div>
+                            </div> */}
                             <div className='txt'>
                                 <h2>{member.name}</h2>
                                 <p>{member.position}</p>
@@ -45,7 +43,7 @@ export default function Members(){
             
             })}
             </ul>
-            <div className="decBox">
+            <div className='descBox'>
             <h2>Lorem ipsum dolor sit.</h2>
 					<p>
 						Lorem ipsum, dolor sit amet consectetur adipisicing elit. A esse cupiditate, vitae deleniti repellat

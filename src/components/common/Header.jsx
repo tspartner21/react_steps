@@ -3,7 +3,7 @@ import {Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const gnbArr = ['members', 'gallery', 'youtube', 'contact', 'posts'];
-  const snsArr = ['FaEnvelope', 'FaInstagram', 'FaYoutube'];
+  const snsArr = [FaEnvelope, FaInstagram, FaYoutube];
 
   //리턴문 밖에서만 use사용가능함
 	// const path = useLocation ();
@@ -20,15 +20,15 @@ export default function Header() {
      </h1>
      {/*주석 하는 방법 */}
      <nav>
-        <ul className="gnb">
-           {gnbArr.map((data, idx)=> {
-            return (
-              <li key={idx} className={pathname === '/' + data ? 'on' : '' }>
-                <Link to={'/'+data}>{data.toUpperCase()}</Link>
-              </li>
-            );
-           })}
-        </ul>
+				<ul className='gnb'>
+					{gnbArr.map((data, idx) => {
+						return (
+							<li key={idx} className={pathname === '/' + data ? 'on' : ''}>
+								<Link to={'/' + data}>{data.toUpperCase()}</Link>
+							</li>
+						);
+					})}
+				</ul>
 
         <ul className="sns">
           {/*화살표 함수 특성상 JSX 반환시 {return}문은 생략 가능 */}
