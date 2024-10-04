@@ -7,6 +7,7 @@ import Gallery from "./components/sub/Gallery";
 import Members from "./components/sub/Members";
 import Posts from "./components/sub/Posts";
 import Youtube from "./components/sub/Youtube";
+import YoutubeDetail from "./components/sub/YoutubeDetail";
 import Contact from "./components/sub/Contact";
 import { Route, Routes } from "react-router-dom";
 
@@ -27,6 +28,7 @@ export default function App() {
 					<Route path='/members' element={<Members/>}/>
 					<Route path='/gallery' element={<Gallery/>}/>
 					<Route path='/youtube' element={<Youtube/>}/>
+					<Route path='/youtube/:id' element={<YoutubeDetail />}/> 
 					<Route path='/contact' element={<Contact/>}/>
 					<Route path='/posts' element={<Posts/>}/>		
 				</Routes>

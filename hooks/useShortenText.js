@@ -4,6 +4,10 @@ export default function useShortenText() {
 	// 	console.log(`Hello ${user_name}`);
 	// };
 	return (text, len) => {
+
+		if(!text || typeof text !== 'string'){
+			return '';
+		}
 		return text.length > len ? text.substr(0 , len) + '...' : text; 
 			
 

@@ -3,6 +3,7 @@ import Layout from '../common/Layout';
 import Pic from '../common/Pic';
 import useShortenText from '../../../hooks/useShortenText';
 import useCombineText from '../../../hooks/useCombineText';
+import {Link} from 'react-router-dom';
 
 export default function Youtube() {
 	const shortenText = useShortenText();
@@ -11,8 +12,8 @@ export default function Youtube() {
 
 	const fetchYoutube = () => {
 		shortenText('David');
-		// const api_key = import.meta.env.VITE_YOUTUBE_API;
-		const api_key ='AIzaSyCtJt2jnOcXV6eLUZmF2gT6LGa3mSPkpbM';
+		const api_key = import.meta.env.VITE_YOUTUBE_API;
+		// const api_key ='AIzaSyCtJt2jnOcXV6eLUZmF2gT6LGa3mSPkpbM';
 		const pid = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
 		const num = 10;
 		const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${pid}&key=${api_key}&maxResults=${num}`;
@@ -34,7 +35,9 @@ export default function Youtube() {
 			{Vids.map((vid, idx) => {
 				return (
 					<article key={idx}>
-						<h3>{shortenText(vid.snippet.title, 60)}</h3>
+						<h3>
+							<Link to={'/youtube/' + vid.id}>{shortenText(vid.snippet.title, 60)}</Link>
+						</h3>
 						<div className='txt'>
 							<p>{shortenText(vid.snippet.description, 150)}</p>
 							<span>{combineText(vid.snippet.publishedAt.split('T')[0], '-', '.')}</span>
