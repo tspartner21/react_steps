@@ -7,6 +7,7 @@ $mobile : 599px;
 @import './common/header';
 @import './common/footer';
 @import './common/layout';
+@import './common/modal';
 
 //main
 @import './main/home';
@@ -15,3 +16,4 @@ $mobile : 599px;
 @import './sub/members';
 @import './sub/youtube';
 @import './sub/youtubeDetail';
+@import './sub/gallery';
