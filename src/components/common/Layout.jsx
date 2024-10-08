@@ -2,33 +2,36 @@ import { useLocation } from 'react-router-dom';
 import UseSplitText from '../../hooks/useSplitText';
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import MaskText from './MaskText';
 
 export default function Layout({ title, children }) {
 	//커스텀훅으로 핸들러함수 안쪽에서 호출할 수 있는 실제 사용가능한 함수 반환받음
 	const ref_title = useRef(null);
-	const ref_slogan = useRef(null);
+	// const ref_slogan = useRef(null);
 	const splitText = UseSplitText();
 	const { pathname } = useLocation();
 	const isDetail = pathname.includes('/youtube/');
 	
-	
-
 	useEffect(()=>{	
 		//전달한 인수가 3개 이상일때는 객체형식으로 전달	
 		splitText(ref_title, {interval:0.1});
-		ref_slogan.current.classList.add('on');
+		// ref_slogan.current.classList.add('on');
 	},[]);
 
 	return (
 		<main className={isDetail ? 'detail' : title.toLowerCase()}>
 
 			<h1 ref={ref_title}>{title}</h1>
-			<div className="slogan" ref={ref_slogan}>
+			{/* <div className="slogan" ref={ref_slogan}>
 				<span>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, officiis!
 				</span>
 				<div className="mask"></div>
-			</div>
+			</div> */}
+
+			<MaskText>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
+			</MaskText>
 
 			<motion.section 
 			initial={{opacity : 0, y : 200}}
