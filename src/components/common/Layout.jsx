@@ -29,15 +29,19 @@ export default function Layout({ title, children }) {
 				<div className="mask"></div>
 			</div> */}
 
-			<MaskText>
+			<MaskText duration={1} delay={0} color={'#000'}>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
+			</MaskText>
+			<br/>
+			<MaskText duration={0.2} delay={1} color={'red'}>
+				Lorem, ipsum dolor.
 			</MaskText>
 
 			<motion.section 
 			initial={{opacity : 0, y : 200}}
 			animate={{opacity : 1, y : 0}}
 			exit= {{opacity : 0 , y : 200, transition : {delay:0} }}
-			transition={{duration:1, delay:0.7}}>
+			transition={{duration:1, delay:0.7 , ease:'linear'}}>
 			{children}
 			</motion.section>
 			{/* <motion.h1

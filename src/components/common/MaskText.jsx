@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function MaskText({children}){
+export default function MaskText({children, duration , delay , color} , ){
     console.log('mask')
 
 
@@ -8,7 +8,7 @@ export default function MaskText({children}){
     
         fontSize : '1.2rem', 
         fontFamily : 'orbitron' ,
-        color : '#555',
+        color : color,
         display : 'inline-block',
         position : 'relative',
         overflow : 'hidden',    
@@ -22,7 +22,7 @@ export default function MaskText({children}){
         height : '100%',
         position : 'absolute',
         top : 0,
-        backgroundColor : '#555'
+        backgroundColor : color
     }
 
 
@@ -33,7 +33,7 @@ export default function MaskText({children}){
             initial={{opacity : 0}}
             animate={{opacity : 1}}
             exit={{opacity:0, transition:{delay:0}}}
-            transition={{duration:0.01 , delay:0.3}}>
+            transition={{duration:0.01 , delay:duration/2 + delay}}>
                 {children}
             </motion.span>
 
@@ -41,7 +41,7 @@ export default function MaskText({children}){
             style={maskStyle}
             initial={{x:'-100%'}}
             animate={{x:'100%'}}
-            transition={{duration:0.6}}>                
+            transition={{duration , delay}}>                
             </motion.div>
         </div>
     );
