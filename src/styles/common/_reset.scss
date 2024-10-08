@@ -4,6 +4,8 @@ ul,ol,li {list-style: none;}
 html {font-size: 16px;}
 body{
     background: #efefef;
+    width : 100%;
+    overflow-x: hidden; //가로스크롤 안 생기게함
 
 }
 ::-webkit-scrollbar{

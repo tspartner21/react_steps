@@ -1,4 +1,4 @@
-import Layout from '../common/Layout';
+import Layout from '../common/Layout___';
 import memberData from '../../data/memberData';
 import Pic from '../common/Pic';
 

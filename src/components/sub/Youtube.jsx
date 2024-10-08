@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../common/Layout';
+import Layout from '../common/Layout___';
 import Pic from '../common/Pic';
 import useShortenText from '../../../hooks/useShortenText';
 import useCombineText from '../../../hooks/useCombineText';

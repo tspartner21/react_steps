@@ -1,4 +1,4 @@
-import Layout from "../common/Layout";
+import Layout from "../common/Layout___";
 
 export default function Posts(){
     return(
