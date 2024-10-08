@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Layout from "../common/Layout___";
+import Layout from "../common/Layout";
 
 export default function Contact(){
     //순서 1 : 서버쪽에서 받아올 데이터를 담을 빈 배열 state공간 및 함수 생성

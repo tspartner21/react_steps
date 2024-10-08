@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom';
-import Layout from '../common/Layout___';
+import Layout from '../common/Layout';
 import {useEffect , useState} from 'react';
 import useCombineText from '../../../hooks/useCombineText';
 import useShortenText from '../../../hooks/useShortenText';
