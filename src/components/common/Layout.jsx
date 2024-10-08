@@ -8,12 +8,17 @@ export default function Layout({ title, children }) {
 	const isDetail = pathname.includes('/youtube/');
 
 	//커스텀훅으로 핸들러함수 안쪽에서 호출할 수 있는 실제 사용가능한 함수 반환받음
-	const splitText = UseSplitText();
-
 	const ref_title = useRef(null);
+	const splitText = UseSplitText();
+	
 
 	useEffect(()=>{
+		// ref_title.current.classList.remove('on');
 		splitText(ref_title);
+		// return () =>{
+		// 	ref_frame.current.classList.remove('on');
+		// };
+
 
 	},[])
 
