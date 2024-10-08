@@ -15,12 +15,50 @@ main {
             
 
         }
+        &.on{
+                span{
+                    opacity: 1;
+                    transform: scale(1) rotate(0deg);
+                }
+        }
+
+
     }
 
-    h1.on{
+    .slogan {
+        margin-bottom : 100px;
+        font-size : 1.2rem;
+        font-family : 'orbitron';
+        color : #555;
+        display : inline-block;
+        position: relative;
+        overflow: hidden;
+
+        //slogan프레임이 활성화되면 (on클래스 붙으면) 마스크박스가 왼쪽밖에서 오른쪽밖으로 1초동안 등속이동
+        //마스크가 절반이동한 시점인 0.5초 시점에 span텍스트를 보임처리함
         span{
+            opacity : 0;
+            transition-duration: 0.1s;
+            transition-delay: 0.3s;
+        }
+        .mask{ //부모값 relative없으면 body까지 가서 화면이 어둡게 보인다. 글자까지만 가려지도록 slogan에 relative도 지정한다
+            width : 100%;
+            height : 100%;
+            position : absolute;
+            top : 0px;
+            left : -100%;
+            background: #555;
+            transition-timing-function: linear;
+            transition-duration: 0.6s;
+        }
+
+        &.on {
+           span{
             opacity: 1;
-            transform: scale(1) rotate(0deg);
+           }
+            .mask {
+                left : 100%;
+            }
         }
     }
 }
