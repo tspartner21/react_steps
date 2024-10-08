@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import UseSplitText from '../../hooks/useSplitText';
 import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Layout({ title, children }) {
 	//커스텀훅으로 핸들러함수 안쪽에서 호출할 수 있는 실제 사용가능한 함수 반환받음
@@ -9,20 +10,20 @@ export default function Layout({ title, children }) {
 	const { pathname } = useLocation();
 	const isDetail = pathname.includes('/youtube/');
 
-	useEffect(()=>{
-		// ref_title.current.classList.remove('on');
-		//전달한 인수가 3개 이상일때는 객체형식으로 전달
-		splitText(ref_title,0.2, 0.1);
-		// return () =>{
-		// 	ref_frame.current.classList.remove('on');
-		// };
-
-
+	useEffect(()=>{	
+		//전달한 인수가 3개 이상일때는 객체형식으로 전달	
+		splitText(ref_title, {interval:0.1});
 	},[]);
 
 	return (
 		<main className={isDetail ? 'detail' : title.toLowerCase()}>
 			<h1 ref={ref_title}>{title}</h1>
+			<motion.section initial={{opacity : 0, y : 200}}
+			animate={{opacity : 1, y : 0}}
+			exit= {{opacity : 0 , y : 200, transition : {delay:0} }}
+			transition={{duration:1, delay:0.7}}>
+			{children}
+			</motion.section>
 			{/* <motion.h1
 				initial={{ x: -200, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
@@ -31,7 +32,7 @@ export default function Layout({ title, children }) {
 				{title}
 			</motion.h1> */}
 
-			<section>{children}</section>
+			
 		</main>
 	);
 }

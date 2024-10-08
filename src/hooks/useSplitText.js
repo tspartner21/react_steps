@@ -10,7 +10,15 @@
 
     export default function UseSplitText(){
     //내부적으로 current값을 직접 추출하기 때문에 호출시 참조객체명만 전달
-    return (ref, interval=0 , delay = 0) => {
+    return (ref, option ) => {
+        if(!ref) console.error('첫번째 인수로는 참조객체값이 와야합니다')
+        const default_option = {interval : 0 , delay : 0};
+        //불변성을 유지하면서 2개의 객체를 합쳐서 새로운 객체 반환하는 패턴
+        //{...객체1, ...객체2}
+                //힙메모리 객체값을 꺼내와서 , 하나로 묶는 것
+        const result_option = {...default_option, ...option};
+
+
         //인수로 전달받은 참조객체안의 요소의 텍스트만 가져옴
         let text = ref.current.innerText;
         //동적으로 생성될 태그문자열이 담길 빈 변수 생성
@@ -19,8 +27,11 @@
 
         //문자열을 반복돌면서 동적으로 <span>으로 감사면서 문자열 쌓아나감
         for(let letter of text){
+            // tags += `<span style='display:inline-block;transition-Duration:0.5s; transition-delay:${
+            //     count*interval + delay
+            // }s'>${letter}</span>`;
             tags += `<span style='display:inline-block;transition-Duration:0.5s; transition-delay:${
-                count*interval + delay
+                count*result_option.interval + result_option.delay
             }s'>${letter}</span>`;
             count++;
         }
