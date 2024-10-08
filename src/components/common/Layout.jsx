@@ -1,26 +1,24 @@
 import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import UseSplitText from '../../hooks/useSplitText';
 import { useEffect, useRef } from 'react';
 
 export default function Layout({ title, children }) {
-	const { pathname } = useLocation();
-	const isDetail = pathname.includes('/youtube/');
-
 	//커스텀훅으로 핸들러함수 안쪽에서 호출할 수 있는 실제 사용가능한 함수 반환받음
 	const ref_title = useRef(null);
 	const splitText = UseSplitText();
-	
+	const { pathname } = useLocation();
+	const isDetail = pathname.includes('/youtube/');
 
 	useEffect(()=>{
 		// ref_title.current.classList.remove('on');
-		splitText(ref_title);
+		//전달한 인수가 3개 이상일때는 객체형식으로 전달
+		splitText(ref_title,0.2, 0.1);
 		// return () =>{
 		// 	ref_frame.current.classList.remove('on');
 		// };
 
 
-	},[])
+	},[]);
 
 	return (
 		<main className={isDetail ? 'detail' : title.toLowerCase()}>

@@ -10,15 +10,19 @@
 
     export default function UseSplitText(){
     //내부적으로 current값을 직접 추출하기 때문에 호출시 참조객체명만 전달
-    return (ref, interval=0) => {
+    return (ref, interval=0 , delay = 0) => {
         //인수로 전달받은 참조객체안의 요소의 텍스트만 가져옴
         let text = ref.current.innerText;
         //동적으로 생성될 태그문자열이 담길 빈 변수 생성
         let tags = '';
+        let count = 0; //글자 잘라서 표시
 
         //문자열을 반복돌면서 동적으로 <span>으로 감사면서 문자열 쌓아나감
         for(let letter of text){
-            tags += `<span style='display:inline-block;transition-Duration:0.5s;'>${letter}</span>`;
+            tags += `<span style='display:inline-block;transition-Duration:0.5s; transition-delay:${
+                count*interval + delay
+            }s'>${letter}</span>`;
+            count++;
         }
         //tag문자열이 완성되면 ref참조 요소 안쪽에 변경된 문자열 DOM구조 바꿔치기
         //기존 신입은 hook 쓰기도 어려워함, 커스텀훅을 쓰는 것을 보여주면, 주도적 개발자로 보여줌
