@@ -1,8 +1,8 @@
 import {useParams} from 'react-router-dom';
 import Layout from '../common/Layout';
 import {useEffect , useState} from 'react';
-import useCombineText from '../../../hooks/useCombineText';
-import useShortenText from '../../../hooks/useShortenText';
+import useCombineText from '../../hooks/useCombineText';
+import useShortenText from '../../hooks/useShortenText';
 
 export default function YoutubeDetail(){
     //useParams로 url을 통해 전달되는 파라미터값을 반환
