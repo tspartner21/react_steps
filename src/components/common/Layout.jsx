@@ -33,7 +33,7 @@ export default function Layout({ title, children }) {
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
 			</MaskText>
 			<br/>
-			<MaskText duration={0.2} delay={1} color={'red'}>
+			<MaskText duration={0.2} delay={1} color={'red'} style={{margintop:50, fontSize:80,fontFamily:'raleway'}}>
 				Lorem, ipsum dolor.
 			</MaskText>
 

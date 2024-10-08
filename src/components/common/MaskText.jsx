@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function MaskText({children, duration , delay , color} , ){
+export default function MaskText({children, duration , delay , color ,style}  ){
     console.log('mask')
 
 
@@ -28,7 +28,8 @@ export default function MaskText({children, duration , delay , color} , ){
 
     
     return(
-        <div style={frameStyle}>
+        <div style={{...frameStyle, ...style}}> 
+        {/*{...frameStyle, ...style} 전개 스타일로 객체 복사하기  */}
           <motion.span
             initial={{opacity : 0}}
             animate={{opacity : 1}}
@@ -39,8 +40,8 @@ export default function MaskText({children, duration , delay , color} , ){
 
             <motion.div
             style={maskStyle}
-            initial={{x:'-100%'}}
-            animate={{x:'100%'}}
+            initial={{x:'-101%'}}
+            animate={{x:'101%'}}
             transition={{duration , delay}}>                
             </motion.div>
         </div>
