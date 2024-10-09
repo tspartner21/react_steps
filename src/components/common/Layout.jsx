@@ -16,7 +16,13 @@ export default function Layout({ title, children }) {
 		//전달한 인수가 3개 이상일때는 객체형식으로 전달	
 		splitText(ref_title, {interval:0.1});
 		// ref_slogan.current.classList.add('on');
-	},[]);
+	},[splitText]); 
+	//useEffect에 의존성 배열에 특정 값을 등록하라고 뜨는 경우
+	//해당 컴포넌트 자체적으로 제어되지 않는 요소가 useEffect안쪽에서 활용되고 있을때, 등록하라는 권고사항이 출력
+	//해결방법 : 등록처리(잘못등록하면 재귀적 호출 되면서 무한호출 문제)
+	//무한호출시 해결방법 : useMemo, useCallback 등의 메모이제이션 훅을 이용해서 강제로 메모리에 등록 후, 사용
+	//리액트쿼리, 리액트 컨텍스트 (10월 16일 수요일까지)
+	//파이썬 장고 3주 동안 , 프레임웍이라서 그대로 붙여넣으면 동작한다, 게시판 CRUD ,restAPI 리액트로 만든것을 게시글로 등록 (2주반 동안 진행)
 
 	return (
 		<main className={isDetail ? 'detail' : title.toLowerCase()}>
@@ -33,7 +39,7 @@ export default function Layout({ title, children }) {
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
 			</MaskText>
 			<br/>
-			<MaskText duration={0.2} delay={1} color={'red'} style={{margintop:50, fontSize:80,fontFamily:'raleway'}}>
+			<MaskText duration={0.6} delay={1} color={'#555'}>
 				Lorem, ipsum dolor.
 			</MaskText>
 

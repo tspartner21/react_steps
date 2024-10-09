@@ -1,7 +1,7 @@
 import Layout from '../common/Layout';
 import memberData from '../../data/memberData';
 import Pic from '../common/Pic';
-import { useRef, useState } from 'react';
+import MaskBox from '../common/MaskBox';
 
 /*
     참조객체의 가상돔을 담아 활용하는 패턴
@@ -12,48 +12,6 @@ import { useRef, useState } from 'react';
 
 export default function Members() {
 
-    console.log('Member rendered!');
-
-    // const pEl = useRef(null); //참조 객체 정의 , 가상돔에서 생성하고 한번에 바꿈
-    // console.log(pEl);
-
-    const refEl = useRef(0);
-
-    const [Num, setNum] = useState(0);
-
-    const changeRef = () => {
-        console.log('changeref called');
-        refEl.current = 1;
-    };
-
-    const changeState = () => {
-        console.log('changeState called');
-        setNum(Num + 1);
-    };
-
-    const changeColor = () => {
-
-
-        
-        //changeColor 함수가 호출되는 순간 가상돔 요소를 찾는 것이 아닌
-        //이전 렌더링 사이클 때 변환된 리얼돔을 직접 가져와서 스타일 변경함
-        //리액트는 개발 이후 유지보수가 장점임, 스테이트 값만 변경하기 때문에 연결된 것만 추적하면됨
-        //document.querySelector로 처리하면 모든 것을 찾아야함, 재렌더링되지 않은 경우, 이전 돔을 가져오는 것임
-        // 수많은 스테이트값이 변경되는 경우, 내가 제어하는 돔과 정보값과 다름
-        //이처럼 가상돔이 아닌 이전 렌더링 타임에 생성된 리얼돔을 직접 제어하면 안되는 이유
-        //문제점 1 : state와 연관이 없는 일반 DOM요소를 제어하기 때문에 추후 데이터 추적 불가능
-        //문제점 2 :  현재 렌더링 사이클에서 다루고 있는 최신 요소가 아닌 이전 렌더링때 생성된 요소를 다루기 때문에 잘못된 예전 데이터를 다루게됨
-        //우리나라 리액트 뜬 이유 : 배민 자사 홈에 최신점 설명함, 페이스북과 동일한 이슈, 배민 정보가 1초에 수십개 바뀜
-        //import { useRef } from 'react'; 이것을 사용한다
-
-        const pEl = document.querySelector('.titleBox p'); //직접 제어는 사용안함
-        // console.log(pEl);
-
-        //참조객체의 가상돔을 제어하면, 현재 렌더링 사이클의 최신 가상돔 정보를 제어가능
-        pEl.current.style.color = 'red';
-      
-    };
-
 	return (
 		<Layout title={'MEMBERS'}>
 			<article className='ceoBox'>
@@ -61,16 +19,19 @@ export default function Members() {
 					<h2>{memberData[0].name}</h2>
 					<p>{memberData[0].position}</p>
 				</div>
-				<Pic className='pic' src={'/' + memberData[0].pic} />
+                <MaskBox style={{width : '50%' , height : '65vh'}} delay={2}>
+                    <Pic className='pic' src={'/' + memberData[0].pic} shadow/>
+                </MaskBox>
 			</article>
 
         {/* //첫번째 순번의 데이터가 아닐때에만 반복 출력 */}
         <article className='memberListBox'>
             <div className='titBox'>
-                <h2 onClick={changeRef}>Our Team Members</h2>
-                <p onClick={changeState}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora possimus non ipsa cum. Veritatis, dolore
-						aliquam? Consectetur assumenda dolor labore.
+                <h2>Our Team Members</h2>
+                <p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
+						possimus non ipsa cum. Veritatis, dolore aliquam? Consectetur
+						assumenda dolor labore.
 					</p>
             </div>
 
