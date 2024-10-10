@@ -14,7 +14,7 @@ export default function SplitText({children , style , interval=0.1 , delay = 0 ,
 
     // children이 문자열일 경우만 배열로 변환
     const textArr = typeof children === 'string' ? Array.from(children) : [children];
-              
+
     console.log(textArr);
 
     //부모요소를 통해서 동적으로 반복생성될 자식요소인 span에 적용할 서식 관련 스타일만 전달

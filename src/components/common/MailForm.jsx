@@ -8,6 +8,7 @@ export default function MailForm(){
     const ref_name = useRef(null);
     const ref_email = useRef(null);
     const ref_msg = useRef(null);
+    
     //전송 이벤트 발생시, 폼요소의 값을 비우기 위한 초기화 함수
     const resetForm = () => {
         [ref_name , ref_email, ref_msg].forEach(dom => (dom.current.value = ''));
@@ -22,7 +23,7 @@ export default function MailForm(){
             publicKey : import.meta.env.VITE_PUBLIC_KEY
         } )
         .then(res=>{
-            alert('문의내용이 관리자에 전달되었습니다');
+            alert('문의 내용이 관리자에 전달되었습니다');
             console.log(res);
             resetForm();
         });
