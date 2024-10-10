@@ -5,7 +5,6 @@ import Modal from '../common/Modal';
 import Content from '../common/Content';
 
 export default function Gallery() {
-    console.log('Gallery Component renderd!');
 	const [Flickr, setFlickr] = useState([]);
     const [ModalOpen, setModalOpen] = useState(false);
     //클릭한 목록요소의 순번을 상태 저장

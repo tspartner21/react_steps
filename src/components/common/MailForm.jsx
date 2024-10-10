@@ -1,24 +1,51 @@
-export default function MailForm(){
-return (
-        <article className='mailForm'>
+import emailjs from '@emailjs/browser';
+import { useRef } from 'react';
 
-            <form>                
+
+export default function MailForm(){
+    //emailJS API 가 제공하는 메일서버에 폼값 전달하는 함수
+    const ref_form = useRef(null);
+    const ref_name = useRef(null);
+    const ref_email = useRef(null);
+    const ref_msg = useRef(null);
+    //전송 이벤트 발생시, 폼요소의 값을 비우기 위한 초기화 함수
+    const resetForm = () => {
+        [ref_name , ref_email, ref_msg].forEach(dom => (dom.current.value = ''));
+
+    }
+    //전송 버튼 클릭시 실행될 함수
+    const sendForm = e => {
+        e.preventDefault();
+
+        emailjs
+        .sendForm(import.meta.env.VITE_SERVICE_KEY, import.meta.env.VITE_TEMPLATE_KEY , ref_form.current, {
+            publicKey : import.meta.env.VITE_PUBLIC_KEY
+        } )
+        .then(res=>{
+            alert('문의내용이 관리자에 전달되었습니다');
+            console.log(res);
+            resetForm();
+        });
+    }
+
+return (
+        <article className='mailForm'>                 
             <div className="formBox">
-                
-                <form>
+                {/*form 에 전송 이벤트 연결 */}                
+                <form onSubmit={sendForm} ref={ref_form}>
                     <div className="upper">
                         <span>
                             <label htmlFor="uName">Name</label>
-                            <input type="text" id="uName" placeholder="Leave your name" />
+                            <input ref={ref_name} name='user_name' type="text" id="uName" placeholder="Leave your name" />
                         </span>
                         <span>
                             <label htmlFor="uMail">E-Mail</label>
-                            <input type="text" id="uMail" placeholder="Leave your email" />
+                            <input ref={ref_email} name='user_email' type="text" id="uMail" placeholder="Leave your email" />
                         </span>
                     </div>
                     <div className="lower">
                         <label htmlFor="msg">Message</label>
-                        <textarea name="msg" id="msg" placeholder="Leav your message">
+                        <textarea ref={ref_msg} name="message" id="msg" placeholder="Leav your message">
                         </textarea>
                     </div>
 
@@ -39,7 +66,7 @@ return (
                 <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia, sequi ipsum. Deleniti nesciunt rerum ex!</p>
             </div>
 
-            </form>
+       
             
 
             

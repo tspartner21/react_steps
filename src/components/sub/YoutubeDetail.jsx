@@ -2,7 +2,6 @@ import {useParams} from 'react-router-dom';
 import Layout from '../common/Layout';
 import {useEffect , useState} from 'react';
 import useCombineText from '../../hooks/useCombineText';
-import useShortenText from '../../hooks/useShortenText';
 import Content from '../common/Content';
 
 export default function YoutubeDetail(){
@@ -12,7 +11,6 @@ export default function YoutubeDetail(){
 
     const [YoutubeVid, setYoutubeVid] = useState(null);
     const combineText = useCombineText();
-    const shortenText = useShortenText();
         // 해당 컴포넌트는 2번 재렌더링됨
         // YoutubeVid 상태값이  null 상태로 렌더링되고 그때 fetching 함수가 받아온 데이터를 해당 상태에 담아주면서 2차 렌더링발생
                
@@ -40,7 +38,7 @@ export default function YoutubeDetail(){
                 <figure className='vidFrame'>
                     <iframe width='100%' height='100%' title='youtube' src={`https://www.youtube.com/embed/${YoutubeVid?.snippet?.resourceId?.videoId || ''}`}></iframe>
                 </figure>
-                <p>{shortenText(YoutubeVid?.snippet.description || '', 250)}</p>
+                <p>{YoutubeVid?.snippet.description}</p>
                 <span>{combineText(YoutubeVid?.snippet.publishedAt.split('T')[0] || '', '-','.')}</span>
             </Content>
         </Layout>

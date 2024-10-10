@@ -22,7 +22,7 @@ export default function MaskText({children, duration = 0.5, delay = 0 , color = 
 
 
     //span text motion styles
-    const [init , active , end , time] = {
+    const {init , active , end , time} = {
         init : {opacity : 0},
         active : {opacity : 1},
         end : {opacity : 0 , transition : {delay : 0}},

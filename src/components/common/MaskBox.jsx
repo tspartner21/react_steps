@@ -17,7 +17,7 @@ export default function MaskBox({
     }; 
 
     //motion options 
-    const [init , active, end] = {
+    const {init , active, end} = {
         init : {opacity : 0},
         active : {opacity : 1},
         end : {opacity : 0.01 , transition : {delay : 0}},
