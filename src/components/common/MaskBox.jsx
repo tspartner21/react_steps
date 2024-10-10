@@ -10,23 +10,17 @@ export default function MaskBox({
     }){
     console.log('mask')
 
-    
-
     const frameStyle = {
-    
         display : 'inline-block',
         position : 'relative',
         overflow : 'hidden',      
-    };
-
-
-   
+    }; 
 
     //motion options 
-    const motionBox = {
-        in : {opacity : 0},
-        on : {opacity : 1},
-        out : {opacity : 0.01 , transition : {delay : 0}},
+    const [init , active, end] = {
+        init : {opacity : 0},
+        active : {opacity : 1},
+        end : {opacity : 0.01 , transition : {delay : 0}},
         time : {duration : 0.01 , delay : duration / 2 + delay }
     };
     
@@ -36,10 +30,9 @@ export default function MaskBox({
         {/* children으로 전달된 요소가 black 요소가 black 요소이 때문에 내부 wrapper 요소도 div 처리 */}
           <motion.div
             style = {{width : '100%' , height : '100%'}}
-            variants={motionBox}
-            initial={{opacity : 0}}
-            animate={{opacity : 1}}
-            exit={{opacity:0, transition:{delay:0}}}
+            initial={init}
+            animate={active}
+            exit={end}
             transition={{duration:0.01 , delay:duration/2 + delay}}>
                 {children}
             </motion.div>

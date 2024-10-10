@@ -21,12 +21,11 @@ export default function MaskText({children, duration = 0.5, delay = 0 , color = 
     };
 
 
-   
     //span text motion styles
-    const spanMotion = {
-        in : {opacity : 0},
-        on : {opacity : 1},
-        out : {opacity : 0 , transition : {delay : 0}},
+    const [init , acvtive , end , time] = {
+        init : {opacity : 0},
+        active : {opacity : 1},
+        end : {opacity : 0 , transition : {delay : 0}},
         time : {duration : 0.01 , delay : duration / 2 + delay}
     };
    
@@ -37,10 +36,9 @@ export default function MaskText({children, duration = 0.5, delay = 0 , color = 
         {/*{...frameStyle, ...style} 전개 스타일로 객체 복사하기  */}
         {/* children 으로 전달된 실제 텍스트를 span으로 전달된 요소 */}
           <motion.span
-            variants={spanMotion}
-            initial='in'
-            animate='on'
-            exit='out'
+            initial={init}
+            animate={active}
+            exit={end}
             transition={spanMotion.time}>
                 {children}
             </motion.span>
