@@ -3,6 +3,7 @@ import Layout from '../common/Layout';
 import {useEffect , useState} from 'react';
 import useCombineText from '../../hooks/useCombineText';
 import useShortenText from '../../hooks/useShortenText';
+import Content from '../common/Content';
 
 export default function YoutubeDetail(){
     //useParams로 url을 통해 전달되는 파라미터값을 반환
@@ -35,11 +36,13 @@ export default function YoutubeDetail(){
     {/* 제목, iframe 영상, 본문 ,날짜순으로 출력 */}
     return(
         <Layout title={YoutubeVid?.snippet.title}>
-            <figure className='vidFrame'>
-                <iframe width='100%' height='100%' title='youtube' src={`https://www.youtube.com/embed/${YoutubeVid?.snippet?.resourceId?.videoId || ''}`}></iframe>
-            </figure>
-            <p>{shortenText(YoutubeVid?.snippet.description || '', 250)}</p>
-            <span>{combineText(YoutubeVid?.snippet.publishedAt.split('T')[0] || '', '-','.')}</span>
+            <Content delay={1}>
+                <figure className='vidFrame'>
+                    <iframe width='100%' height='100%' title='youtube' src={`https://www.youtube.com/embed/${YoutubeVid?.snippet?.resourceId?.videoId || ''}`}></iframe>
+                </figure>
+                <p>{shortenText(YoutubeVid?.snippet.description || '', 250)}</p>
+                <span>{combineText(YoutubeVid?.snippet.publishedAt.split('T')[0] || '', '-','.')}</span>
+            </Content>
         </Layout>
       
     );

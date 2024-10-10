@@ -1,6 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import MaskText from './MaskText';
 import Mask from './Mask';
 import SplitText from './SplitText';
 
@@ -17,34 +15,9 @@ export default function Layout({ title, children }) {
 			
 
 				<SplitText delay = {0.5}>{title}</SplitText>
-				
 			
-				{/* 순서 3 : 텍스트 타이밍 모션 끝날 시점에 첫줄 텍스트 마스크 모션 시작 */}
-				<MaskText delay={1} color={'#444'} style={{fontSize:20 , fontWeight:'normal', fontFamily:'arial'}}>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
-				</MaskText>
-				<br/>
+				<section>{children}</section>
 
-				{/* 순서 4 : 윗줄의 텍스트 마스크 모션 끝날 때 둘째줄 텍스트 마스크 모션 시작 */}
-				<MaskText delay={1.5} color={'#222'} style={{marginBottom : 120}}>
-					Lorem, ipsum dolor.
-				</MaskText>
-				
-				{/* 순서 5 : 두번째 마스크 모션 끝날 때 즈음 전체 컨텐츠 영역 위쪽으로 페이드인 시작 */}
-				<motion.section 
-				initial={{opacity : 0, y : 200}}
-				animate={{opacity : 1, y : 0}}
-				exit= {{opacity : 0 , y : 200, transition : {delay:0} }}
-				transition={{duration:1, delay:1.5 , ease:'linear'}}>
-				{children}
-				</motion.section>
-				{/* <motion.h1
-					initial={{ x: -200, opacity: 0 }}
-					animate={{ x: 0, opacity: 1 }}
-					exit={{ scale: 2, opacity: 0, transition: { duration: 0.3 } }}
-					transition={{ duration: 1, ease: 'easeIn' }}>
-					{title}
-				</motion.h1> */}
 			
 				
 			</main>

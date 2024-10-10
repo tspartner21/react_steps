@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Layout from '../common/Layout';
 import Pic from '../common/Pic';
 import Modal from '../common/Modal';
+import Content from '../common/Content';
 
 export default function Gallery() {
     console.log('Gallery Component renderd!');
@@ -10,7 +11,13 @@ export default function Gallery() {
     //클릭한 목록요소의 순번을 상태 저장
     const [Index, setIndex] = useState(0);
     
-    
+    //Gallery 페이지에만 전용으로 동작할 커스텀 모션 객체 생성
+    const customMotion = {
+        init : {opacity : 0, x : 200},
+        active : {opacity : 1, x : 200},
+        end : {opacity : 0, x : -200, transition : { delay:0 } }
+
+    }
     
     
     
@@ -44,41 +51,34 @@ export default function Gallery() {
 
      <>
           <Layout title={'GALLERY'}>
-           <section className='galleryList'>     
-            {/*            
-        미션
-        클릭이벤트가 발생하는 각각의 article 요소에 모달안에 출력되어야 되는 큰이미지 url정보값을 속성값 이용해 숨김
-        아티클 요소 클릭하는 순간 미리 숨겨놓은 이미지 url정보값을 Modal 안쪽에 Pic 컴포넌트 호출하면서 src 속성 전달
-        
-
-        모델 안에 반복 이벤트가 발생한 순번의 요소의 정보를 클릭하는 패턴
-        1. 순서값을 저장할 상태값 생성
-        2. 반복 요소에 이벤트 발생시 이벤트가 발생한 요소의 순서값을 상태값에 저장
-        3. 모달 안쪽에서 출력해야 되는 정보를 순서 상태값에 연동처리
-        */}
-            {Flickr.map((data, idx) => {
-                   return(
-                       <article key={idx} onClick={()=>{
-                        //해당 요소 클릭시마다 핸들러 함수 안쪽에서 ModalOpen, Index라는 2개의 상태값이 동시에 변경이 되지만, 실제 컴포넌트는 한번만 제렌더링됨
-                        //리액트 18이전까지는 AutoBatching 기능이 지원안되어서
-                        //같은 렌더링 사이클에서 복수개의 상태값 변경시, 변경되는 상태값의 갯수만큼 제렌더링됨
-                        //리액트 18버전부터는 AutoBatching 기능 지원됨
-                        //특정 렌더링 사이클에서 복수개의 상태값이 변경되더라도 해당 상태값들을 Batcing(그룹화)처리해 한번만 제런더링 처리
-                        setModalOpen(true);
-                        //각 이미지 목록 클릭시에 idx순번값을 Inderx상태값에 저장
-                        setIndex(idx);
-                       }
-                       }>
-                            <Pic
-                                src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_z.jpg`}
-                                className='pic' shadow
-                            />
-                            <h3>{data.title}</h3>
-                        </article>
-                   );
-               })}
-               {/* forEach 안해도 되고, 공식이다 map으로 반복돌려라 */}
-           </section>
+            {/* */}
+           <Content delay={1.5} customMotion={customMotion}>
+             <section className='galleryList'>     
+                 
+                 {Flickr.map((data, idx) => {
+                     return(
+                         <article key={idx} onClick={()=>{
+                             //해당 요소 클릭시마다 핸들러 함수 안쪽에서 ModalOpen, Index라는 2개의 상태값이 동시에 변경이 되지만, 실제 컴포넌트는 한번만 제렌더링됨
+                             //리액트 18이전까지는 AutoBatching 기능이 지원안되어서
+                             //같은 렌더링 사이클에서 복수개의 상태값 변경시, 변경되는 상태값의 갯수만큼 제렌더링됨
+                             //리액트 18버전부터는 AutoBatching 기능 지원됨
+                             //특정 렌더링 사이클에서 복수개의 상태값이 변경되더라도 해당 상태값들을 Batcing(그룹화)처리해 한번만 제런더링 처리
+                             setModalOpen(true);
+                             //각 이미지 목록 클릭시에 idx순번값을 Inderx상태값에 저장
+                             setIndex(idx);
+                         }
+                         }>
+                                 <Pic
+                                     src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_z.jpg`}
+                                     className='pic' shadow
+                                 />
+                                 <h3>{data.title}</h3>
+                             </article>
+                     );
+                 })}
+                 {/* forEach 안해도 되고, 공식이다 map으로 반복돌려라 */}
+             </section>
+           </Content>
            
            </Layout>
             {/* 자식 컴포넌트인 모달 안쪽에서 부모인 ModalOpen 상태값을 변경해야 되기 때문에 상태 변경함수 
