@@ -35,11 +35,11 @@ export default function Layout({ title, children }) {
 				<div className="mask"></div>
 			</div> */}
 
-			<MaskText duration={1} delay={0} color={'#000'}>
+			<MaskText duration={0.5} delay={0} color={'#444'} style={{fontSize:14 , fontWeight:'normal', fontFamily:'arial'}}>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero tenetur quo cumque nostrum, asperiores corporis.
 			</MaskText>
 			<br/>
-			<MaskText duration={0.6} delay={1} color={'#555'}>
+			<MaskText duration={0.5} delay={0.5} color={'#222'} style={{marginBottom : 120}}>
 				Lorem, ipsum dolor.
 			</MaskText>
 
