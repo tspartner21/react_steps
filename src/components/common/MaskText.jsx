@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function MaskText({children, duration , delay , color ,style}  ){
+export default function MaskText({children, duration = 0.5, delay = 0 , color = '#000 ',style}  ){
     // console.log('mask')
 
     //기본 스타일 객체
@@ -28,6 +28,19 @@ export default function MaskText({children, duration , delay , color ,style}  ){
         backgroundColor : color
     }
 
+    //span text motion styles
+    const spanMotion = {
+        in : {opacity : 0},
+        on : {opacity : 1},
+        out : {opacity : 0 , transition : {delay : 0}},
+        time : {duration : 0.01 , delay : duration / 2 + delay}
+    }
+
+    const maskMotion = {
+        in : {x : '-101%'},
+        on : {x : '101%'},
+        time : {duration ,delay}
+    };
    
     return(
         //텍스트를 감싸주는 Wrapper
@@ -36,18 +49,20 @@ export default function MaskText({children, duration , delay , color ,style}  ){
         {/*{...frameStyle, ...style} 전개 스타일로 객체 복사하기  */}
         {/* children 으로 전달된 실제 텍스트를 span으로 전달된 요소 */}
           <motion.span
-            initial={{opacity : 0}}
-            animate={{opacity : 1}}
-            exit={{opacity:0, transition:{delay:0}}}
-            transition={{duration:0.01 , delay:duration/2 + delay}}>
+            variants={spanMotion}
+            initial='in'
+            animate='on'
+            exit='out'
+            transition={spanMotion.time}>
                 {children}
             </motion.span>
 
             <motion.div
             style={maskStyle}
-            initial={{x:'-101%'}}
-            animate={{x:'101%'}}
-            transition={{duration , delay}}>                
+            variants={maskMotion}
+            initial='in'
+            animate='on'
+            transition={maskMotion.time}>                
             </motion.div>
         </div>
     );
