@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Mask from './Mask';
 
 export default function MaskBox({
     children, 
@@ -19,13 +20,7 @@ export default function MaskBox({
     };
 
 
-    const maskStyle = {
-        width  : '100%',
-        height : '100%',
-        position : 'absolute',
-        top : 0,
-        backgroundColor : color
-    }
+   
 
     //motion options 
     const motionBox = {
@@ -49,12 +44,7 @@ export default function MaskBox({
                 {children}
             </motion.div>
 
-            <motion.div
-            style={maskStyle}
-            initial={{x:'-101%'}}
-            animate={{x:'101%'}}
-            transition={{duration , delay, ease:'linear'}}>                
-            </motion.div>
+            <Mask duration={duration} delay={delay} color={color} />
         </div>
     );
 }
