@@ -11,7 +11,7 @@
     export default function UseSplitText(){
     //내부적으로 current값을 직접 추출하기 때문에 호출시 참조객체명만 전달
     return (ref, option ) => {
-        if(!ref) console.error('첫번째 인수로는 참조객체값이 와야합니다')
+        if(!ref) return console.error('첫번째 인수로는 참조객체값이 와야합니다')
         const default_option = {interval : 0 , delay : 0};
         //불변성을 유지하면서 2개의 객체를 합쳐서 새로운 객체 반환하는 패턴
         //{...객체1, ...객체2}
@@ -31,15 +31,15 @@
             //     count*interval + delay
             // }s'>${letter}</span>`;
             tags += `<span style='display:inline-block;transition-Duration:0.5s; transition-delay:${
-                count*result_option.interval + result_option.delay
+                count * result_option.interval + result_option.delay
             }s'>${letter}</span>`;
             count++;
         }
         //tag문자열이 완성되면 ref참조 요소 안쪽에 변경된 문자열 DOM구조 바꿔치기
         //기존 신입은 hook 쓰기도 어려워함, 커스텀훅을 쓰는 것을 보여주면, 주도적 개발자로 보여줌
         ref.current.innerHTML = tags;
-
- 		//매번 호출하는 부모 컴포넌트에서 on을 추가하는 구문이 번거로우므로
+    
+        //매번 호출하는 부모 컴포넌트에서 on을 추가하는 구문이 번거로우므로
 		//훅 자체적으로 해당 요소 자체에 on을 추가
 		setTimeout(() => {
 			ref.current.classList.add('on');
