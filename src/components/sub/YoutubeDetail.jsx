@@ -39,7 +39,7 @@ export default function YoutubeDetail(){
                     <iframe width='100%' height='100%' title='youtube' src={`https://www.youtube.com/embed/${YoutubeVid?.snippet?.resourceId?.videoId || ''}`}></iframe>
                 </figure>
                 <p>{YoutubeVid?.snippet.description}</p>
-                <span>{combineText(YoutubeVid?.snippet.publishedAt.split('T')[0] || '', '-','.')}</span>
+                <span className='date'>{combineText(YoutubeVid?.snippet.publishedAt.split('T')[0] || '', '-','.')}</span>
             </Content>
         </Layout>
       

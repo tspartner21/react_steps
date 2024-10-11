@@ -6,14 +6,19 @@ import { motion } from "framer-motion";
 //리액트에서 순수함수를 권장하는 이유 : 브라우저 개입없이 리액트 자체적으로 메모리단에서 모든 데이터를 관리하기 때문에 데이터 추적, 성능면에서 리액트의 개발원칙과 부함됨
 
 //props (children : 텍스트값 , style : 커스텀할 스타일 객체, interval : 시간차 간격 ,delay : 지연시간 , duration : 각 문자마다 적용할 모션시간)
-export default function SplitText({children , style , interval=0.1 , delay = 0 , duration = 0.3}){
+
+
+//YoutubeDetail 상세페이지 컴포넌트에서는 제목 문자값이 바로 전달되는 것이 아닌 유튜브 데이터를 먼저 fetching 처리한 이후
+//객체에서는 추출된 문자데이터를 보내기 때문에 초기에 chidren props 전달되는 값이 undefined 오류 발생
+//해결 방법은 혹시 children값이 없을 경우를 대비해 디폴트 파라미터로 빈문자열 지정
+export default function SplitText({children = '', style , interval=0.1 , delay = 0 , duration = 0.3}){
     //내부적으로 빈배열 생성해서 children으로 전달받은 문자열을 반복돌면서 배열에 담아줌 
-    // const textArr = [];
-    // for (const letter of children) textArr.push(letter);
+    const textArr = [];
+    for (const letter of children) textArr.push(letter);
  
 
     // children이 문자열일 경우만 배열로 변환
-    const textArr = typeof children === 'string' ? Array.from(children) : [children];
+    // const textArr = typeof children === 'string' ? Array.from(children) : [children];
 
     console.log(textArr);
 
