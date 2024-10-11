@@ -52,9 +52,16 @@ export default function Map(){
         image : new kakao.maps.MarkerImage(markerImg , markerSize , markerPos)
      });
 
-
+    //Index 상태값이 변경될때마다 순번 상대값으로 지도 인스턴스 다시 생성되어서 화면갱신
+    //이슈사항 1 : 지점버튼 클릭시마다 Index 상태값이 의존성배열로 등록되어 있는 useEffect 콜백함수를 재호출
+    //해당 콜백이 호출될때마다 내부적으로 새로운 지도 인스턴스가 생성됨
+    //리액트는 (SPA : 단일페이지 어플리케이션) 특성상 index.html은 그대로 있고 리액트 컴포넌트 함수만 재호출되는 구조
+    //useEffect의 콜백함수가 재호출될때마다 기존 생성된 지도 인스턴스를 삭제하지 않고 계속해서 추가가됨(mapFrame 안쪽에 지도 div가 계속 중첩됨)
     //jsx 변환되고 화면에 컴포넌트 마운트시 지도 인스턴스 생성
     useEffect(()=>{
+        //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)
+        ref_mapFrame.current.innerHTML = '';
+
             // 지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성
             //이때 두번때 인수로 위치 인스턴스 지정
             const inst_map = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
@@ -75,7 +82,7 @@ export default function Map(){
                  {ref_info.current.map((el, idx)=>(
                      //동적으로 li 생성 : 클릭한 li의 순서값 idx로 Index 상태값 변경
                      //컴포넌트 재렌더링되면서 변경된 순번의 정보값으로 지도화면 변경됨
-                     <li key={idx} onClick = {() => setIndex(idx)}>
+                     <li key={idx} className={idx === Index ? 'on' : '' } onClick = {() => setIndex(idx)}>
                          {el.title}
                      </li>
                      )
