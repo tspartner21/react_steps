@@ -2,22 +2,14 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Map(){
     const {kakao} = window;
+    /*********useEffect 전까지는 준비 단계임******* */
+    //화면 렌더링에 필요한  state값 초기화
     const [Index, setIndex] = useState(0);
-    //Traffic 레이어 활성/비활성
     const [Traffic , setTraffic] = useState(false);
     const [Roadview , setRoadview] = useState(false);
 
-    const ref_mapFrame = useRef(null);
-    const ref_viewFrame = useRef(null);
-
-    //지도 인스턴스가 담길 빈 참조객체 생성
-    const ref_instMap = useRef(null);
-
-
-    const ref_instView = useRef(null);
-    const ref_instClient = useRef(new kakao.maps.RoadviewClient());
-
   
+    //지점 정보가 담긴 참조객체를 생성하고 현재 활성화된 Index 순번의 데이터 비구조화 할당
     const ref_info = useRef([ //개체를 미리 생성함
         {
         title : 'COEX' ,
@@ -41,62 +33,68 @@ export default function Map(){
 			markerPos: { offset: new kakao.maps.Point(116, 99) }
 		}
     ]);
-
-    //기존 참조객체명까지 매번 호출하기 번거로우므로 비구조할당을 통해 현재 Index순번 상태변화에 따라 활성화되고 있는 객체의 key값을 바로 추출
+    //비구조화 할당 추출
     const { latlng , markerImg , markerSize , markerPos } = ref_info.current[Index];
 
-//위의 비구조화할당으로 추출한 정보값으로 마커 인스턴스 생성
 
+    /**********참조객체 값을 담을 수 있는 것과, 담을 수 없는 것 2개(부수효과 여부) */
 
-     // 마커 인스턴스 생성시 전달되는 인수의 객체에 두번째 프로퍼티로 인스턴스 변경(이미지가 적용된 마커 생성)
-     const inst_marker = new kakao.maps.Marker({
-        position : latlng,
-        image : new kakao.maps.MarkerImage(markerImg , markerSize , markerPos)
-     });
+    //순수함수 형태로 값을 바로 전달받아 반환할 수 있는 인스턴스값 참조객체에 담음
+    const ref_instClient = useRef(new kakao.maps.RoadviewClient());
+    const instType = useRef(new kakao.maps.MapTypeControl());
+    const instZoom = useRef(new kakao.maps.ZoomControl());
+      
 
-    //일반지도/스카이뷰 전환
-    const instType = new kakao.maps.MapTypeControl();
-    const instZoom = new kakao.maps.ZoomControl();
+    //컴포넌트 마운트시에만 전달받을 수 있는 빈 참조 객체 생성
+    const ref_mapFrame = useRef(null);
+    const ref_viewFrame = useRef(null);
+    const ref_instMap = useRef(null);
+    const ref_instMarker = useRef(null);
+    const ref_instView = useRef(null);
+
     
+    //리사이즈 이벤트에 연결될 화면위치 초기화 함수
     const initPos = () => {
-        console.log('initPost called!')
         ref_instMap.current.setCenter(latlng);
      };
 
-    //Index값이 변경될때마다 실행할 useEffect(새로운 Index값으로 지도 인스턴스 갱신)
+    //Index값이 변경될때마다 지도초기화, 뷰, 마커, 로드뷰인스턴스 생성 및 리사이즈 이벤트 연결
     useEffect(()=>{
+         //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)지도, 트랙픽,컨트롤러 정보 초기화 함수
+         ref_mapFrame.current.innerHTML = '';
+
+        //맵,마커, 로드뷰, 로드뷰 인스턴스 생성 후 미리 생성한 참조객체 옮겨 담음
+        //지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성 이때 두번때 인수로 위치 인스턴스 지정
+        ref_instMap.current = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
+        ref_instMarker.current =  new kakao.maps.Marker({
+        position : latlng,
+        image : new kakao.maps.MarkerImage(markerImg , markerSize , markerPos)
+        });
+
+		//roadview 인스턴스 생성
+        ref_instView.current = new kakao.maps.Roadview(ref_viewFrame.current);     
+        //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
+        ref_instMarker.current.setMap(ref_instMap.current);        
+        
 
         //Index 상태값 변경시(지점 버튼 클릭해서 지도화면 갱신시) 무조건 트래픽 레이어 제거
         [setTraffic  , setRoadview].forEach(func=> func(false));
-
-        //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)
-        ref_mapFrame.current.innerHTML = '';
-
-        // 지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성
-        //이때 두번때 인수로 위치 인스턴스 지정
-        ref_instMap.current = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
-
-
-        //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
-        inst_marker.setMap(ref_instMap.current);
-
         //타입 줌 컨트롤러 인스턴스 반복돌며 인스턴스 위에 바인딩
-        [instType, instZoom].forEach(inst => ref_instMap.current.addControl(inst));
-
-        
-		//roadview 인스턴스 생성
-        ref_instView.current = new kakao.maps.Roadview(ref_viewFrame.current);
+        [instType.current, instZoom.current].forEach(inst => ref_instMap.current.addControl(inst));
+        //로드뷰 인스턴스에 panoId 연결해 실제 로드뷰 화면 출력하는 호출문
         //clientInstance의 getNearestPanoId 함수 호출해서 현재 위치 인스턴스값 기준으로
         //제일 가까운 panoId값을 찾아서 view 인스턴스에 바인딩해서 로드뷰 화면에 출력
+
          ref_instClient.current.getNearestPanoId(latlng , 50, panoId => ref_instView.current.setPanoId(panoId, latlng));
 
-        window.addEventListener('resize', initPos);
+         //윈도우 전역 객체에 resize 이벤트 핸들러 연결 및 제거
+         window.addEventListener('resize', initPos);
 
         //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
         return()  => window.removeEventListener('resize' , initPos);     
     }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
 
-    //Traffic 상태값에 boolean 값을 담아주고 해당 상태가 변경될때마다 지도 레이어 ON/OFF 메서드 호출
+    //Traffic 값이 반절될 때마다 트래픽 레이어 토글, 상태값에 boolean 값을 담아주고 해당 상태가 변경될때마다 지도 레이어 ON/OFF 메서드 호출
    useEffect(()=>{
         Traffic 
         ? ref_instMap.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
@@ -110,12 +108,13 @@ export default function Map(){
         <section className='map'>
             <h2>Location</h2>
 
+            {/*맵, 로드뷰 프레임 */}
             <figure className="mapFrame">
                 <article ref={ref_mapFrame} className={`mapFrame ${!Roadview && 'on'}`}></article>
                 <article ref={ref_viewFrame} className={`viewFrame ${Roadview && 'on'}`}></article>
-
             </figure>
 
+            {/* 컨트롤 버튼 모음 */}
            <nav className="btnSet">
              <ul className = "branch">
                  {ref_info.current.map((el, idx)=>(
