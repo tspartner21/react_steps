@@ -8,7 +8,9 @@ export default function Map(){
     //이후 인스턴스 호출하는 구문에 일괄적으로 Index값 연동
     const [Index, setIndex] = useState(0);
 
-   
+    //지도 인스턴스가 담길 빈 참조객체 생성
+    const ref_instMap = useRef(null);
+
     const ref_info = useRef([ //개체를 미리 생성함
         {
         title : 'COEX' ,
@@ -33,11 +35,11 @@ export default function Map(){
 		}
     ]);
 
-       //기존 참조객체명까지 매번 호출하기 번거로우므로 비구조할당을 통해 현재 Index순번 상태변화에 따라 활성화되고 있는 객체의 key값을 바로 추출
-       const { latlng , markerImg , markerSize , markerPos } = ref_info.current[Index];
+    //기존 참조객체명까지 매번 호출하기 번거로우므로 비구조할당을 통해 현재 Index순번 상태변화에 따라 활성화되고 있는 객체의 key값을 바로 추출
+    const { latlng , markerImg , markerSize , markerPos } = ref_info.current[Index];
 
-    //위의 비구조화할당으로 추출한 정보값으로 마커 인스턴스 생성
-    
+//위의 비구조화할당으로 추출한 정보값으로 마커 인스턴스 생성
+
 //비최적화(지저분한) 코드라 사용안함
 //    //마커 인스턴스 생성
 //     const inst_markerImg = new kakao.maps.MarkerImage(
@@ -52,6 +54,13 @@ export default function Map(){
         image : new kakao.maps.MarkerImage(markerImg , markerSize , markerPos)
      });
 
+     //지도 위치 중앙으로 초기화 함수
+     const initPos = () => {
+        console.log('initPost called!')
+        ref_instMap.current.setCenter(latlng);
+     };
+
+
     //Index 상태값이 변경될때마다 순번 상대값으로 지도 인스턴스 다시 생성되어서 화면갱신
     //이슈사항 1 : 지점버튼 클릭시마다 Index 상태값이 의존성배열로 등록되어 있는 useEffect 콜백함수를 재호출
     //해당 콜백이 호출될때마다 내부적으로 새로운 지도 인스턴스가 생성됨
@@ -59,16 +68,22 @@ export default function Map(){
     //useEffect의 콜백함수가 재호출될때마다 기존 생성된 지도 인스턴스를 삭제하지 않고 계속해서 추가가됨(mapFrame 안쪽에 지도 div가 계속 중첩됨)
     //jsx 변환되고 화면에 컴포넌트 마운트시 지도 인스턴스 생성
     useEffect(()=>{
+
+
         //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)
         ref_mapFrame.current.innerHTML = '';
 
-            // 지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성
-            //이때 두번때 인수로 위치 인스턴스 지정
-            const inst_map = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
+        // 지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성
+        //이때 두번때 인수로 위치 인스턴스 지정
+        ref_instMap.current = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
 
-            //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
-            inst_marker.setMap(inst_map);
+        //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
+        inst_marker.setMap(ref_instMap.current);
 
+        //모든 이벤트문은 무조건 useEffect안쪽에서 호출되어야함
+        //이유 : 브라우저 webAPI를 활용하는 모든 구문(dom/fetch/settime) useEffec안쪽에서 실행됨 (밖에서 호출안됨) 순수자바스크립트는 밖에서 호출 
+        //window 객체에 이벤트 연결(리사이즈마다 지도 가운데 위치 초기화 함수 호출)
+        window.addEventListener('resize', initPos)
     }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
 
     return(
