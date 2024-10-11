@@ -4,15 +4,13 @@ export default function Map(){
     const {kakao} = window;
     const ref_mapFrame = useRef(null);
     
-    //지점 정보를 변경하기 위한 데이터 순번을 state에 저장
-    //이후 인스턴스 호출하는 구문에 일괄적으로 Index값 연동
+   
     const [Index, setIndex] = useState(0);
 
     //지도 인스턴스가 담길 빈 참조객체 생성
     const ref_instMap = useRef(null);
 
-    //current 쓰기 불편한 경우
-    //참조 객체에 담기는 값이 추후 동적으로 변경될 일이 없으면 아래처럼 비구조화할당시 변수명을 바꿔치기 하는 식으로 사용가능
+   
     const {current : ref_info} = useRef([ //개체를 미리 생성함
         {
         title : 'COEX' ,
@@ -42,13 +40,6 @@ export default function Map(){
 
 //위의 비구조화할당으로 추출한 정보값으로 마커 인스턴스 생성
 
-//비최적화(지저분한) 코드라 사용안함
-//    //마커 인스턴스 생성
-//     const inst_markerImg = new kakao.maps.MarkerImage(
-//         ref_info.current[0].markerImg,
-//         ref_info.current[0].markerSize,
-//         ref_info.current[0].markerOffset
-//     );
 
      // 마커 인스턴스 생성시 전달되는 인수의 객체에 두번째 프로퍼티로 인스턴스 변경(이미지가 적용된 마커 생성)
      const inst_marker = new kakao.maps.Marker({
@@ -63,12 +54,7 @@ export default function Map(){
      };
 
 
-    //Index 상태값이 변경될때마다 순번 상대값으로 지도 인스턴스 다시 생성되어서 화면갱신
-    //이슈사항 1 : 지점버튼 클릭시마다 Index 상태값이 의존성배열로 등록되어 있는 useEffect 콜백함수를 재호출
-    //해당 콜백이 호출될때마다 내부적으로 새로운 지도 인스턴스가 생성됨
-    //리액트는 (SPA : 단일페이지 어플리케이션) 특성상 index.html은 그대로 있고 리액트 컴포넌트 함수만 재호출되는 구조
-    //useEffect의 콜백함수가 재호출될때마다 기존 생성된 지도 인스턴스를 삭제하지 않고 계속해서 추가가됨(mapFrame 안쪽에 지도 div가 계속 중첩됨)
-    //jsx 변환되고 화면에 컴포넌트 마운트시 지도 인스턴스 생성
+    //Index값이 변경될때마다 실행할 useEffect(새로운 Index값으로 지도 인스턴스 갱신)
     useEffect(()=>{
 
 
@@ -82,8 +68,24 @@ export default function Map(){
         //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
         inst_marker.setMap(ref_instMap.current);
 
-        window.addEventListener('resize', initPos)
+       
+
     }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
+
+    //컴포넌트 언마운트시 한번만 윈도우 이벤트 제거하기 위해 의존성 배열이 비어있는 useEffect 이벤트 연결
+    useEffect(()=>{
+
+        window.addEventListener('resize', initPos);
+
+        //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
+        return()  => {
+        //window 객체에 이벤트 핸들러 연결시에는 설사 해당 컴포넌트가 언마운트되더라도 계속해서 윈도우 전역객체에 등록되어 있음
+        //해결방법 : clean-up 함수를 활용해서 컴포넌트 언마운트시 강제로 window 객체에 연결한 핸들러 함수를 직접 제거
+        console.log('Map Unmounted initPos handler removed');
+        window.removeEventListener('resize' , initPos);
+        };
+        
+    },[])
 
     return(
         <section className='map'>
@@ -109,8 +111,3 @@ export default function Map(){
     );
 }
 
-
-//미션(11시 23분)
-//지도 출력박스 밑에 참조객체 담겨있는 지점정보 배열을 활용하여 동적으로 지점 버튼 3개 출력
-//이때 title 정보값으로 버튼 이름 활용
-//버튼 클릭시 Index상태값을 변경해 바뀐 순번의 지점 정보로 화면이 갱신되도록 이벤트 처리
