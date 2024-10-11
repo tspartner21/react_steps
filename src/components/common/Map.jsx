@@ -75,13 +75,9 @@ export default function Map(){
         //타입 줌 컨트롤러 인스턴스 반복돌며 인스턴스 위에 바인딩
         [instType, instZoom].forEach(inst => ref_instMap.current.addControl(inst));
 
-       
-
-    }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
-
-    //컴포넌트 언마운트시 한번만 윈도우 이벤트 제거하기 위해 의존성 배열이 비어있는 useEffect 이벤트 연결
-    useEffect(()=>{
-
+        //해당 전역이벤트 연결 구문이 빈 의존성 배열의 콜백 안쪽에 등록되었을 때의 문제점
+        //window에 연결되는 initPos 핸들러 함수는 내부적으로 지도인스턴스에 위치 인스턴스값을 활용해서 위치를 갱신하는 구조
+        //리사이즈될때마다 인스턴스 정보값이 갱신되어야 하므로 Index 의존성 배열 안쪽의 콜백에서 호출
         window.addEventListener('resize', initPos);
 
         //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
@@ -91,8 +87,12 @@ export default function Map(){
         console.log('Map Unmounted initPos handler removed');
         window.removeEventListener('resize' , initPos);
         };
-        
-    },[])
+
+       
+
+    }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
+
+   
 
     return(
         <section className='map'>
