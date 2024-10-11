@@ -53,6 +53,9 @@ export default function Map(){
         ref_instMap.current.setCenter(latlng);
      };
 
+    //일반지도/스카이뷰 전환
+    const instType = new kakao.maps.MapTypeControl();
+    const instZoom = new kakao.maps.ZoomControl();
 
     //Index값이 변경될때마다 실행할 useEffect(새로운 Index값으로 지도 인스턴스 갱신)
     useEffect(()=>{
@@ -65,8 +68,12 @@ export default function Map(){
         //이때 두번때 인수로 위치 인스턴스 지정
         ref_instMap.current = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
 
+
         //생성된 마커인스턴스 setMap 메서드 호출시 위치 인스턴스 값 인수로 전달(바인딩)
         inst_marker.setMap(ref_instMap.current);
+
+        //타입 줌 컨트롤러 인스턴스 반복돌며 인스턴스 위에 바인딩
+        [instType, instZoom].forEach(inst => ref_instMap.current.addControl(inst));
 
        
 
