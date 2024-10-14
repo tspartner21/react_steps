@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState , useCallback} from "react";
 
 export default function Map(){
     const {kakao} = window;
@@ -41,8 +41,8 @@ export default function Map(){
 
     //순수함수 형태로 값을 바로 전달받아 반환할 수 있는 인스턴스값 참조객체에 담음
     const ref_instClient = useRef(new kakao.maps.RoadviewClient());
-    const instType = useRef(new kakao.maps.MapTypeControl());
-    const instZoom = useRef(new kakao.maps.ZoomControl());
+    const ref_instType = useRef(new kakao.maps.MapTypeControl());
+    const ref_instZoom = useRef(new kakao.maps.ZoomControl());
       
 
     //컴포넌트 마운트시에만 전달받을 수 있는 빈 참조 객체 생성
@@ -54,15 +54,14 @@ export default function Map(){
 
     
     //리사이즈 이벤트에 연결될 화면위치 초기화 함수
-    const initPos = () => {
-        ref_instMap.current.setCenter(latlng);
-     };
+    const initPos = useCallback(() => ref_instMap.current.setCenter(latlng),[latlng]);
+  
 
-    //Index값이 변경될때마다 지도초기화, 뷰, 마커, 로드뷰인스턴스 생성 및 리사이즈 이벤트 연결
-    useEffect(()=>{
-         //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)지도, 트랙픽,컨트롤러 정보 초기화 함수
-         ref_mapFrame.current.innerHTML = '';
-
+     //카카오 지도관련 인스턴스들을 생성해서 최종적으로 화면에 렌더링 해주는 함수
+     const createMap = useCallback(() => {
+        //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)지도, 트랙픽,컨트롤러 정보 초기화 함수
+        ref_mapFrame.current.innerHTML = '';
+        
         //맵,마커, 로드뷰, 로드뷰 인스턴스 생성 후 미리 생성한 참조객체 옮겨 담음
         //지도 인스턴스 생성은 ref_mapFrame에 담겨있는 실제 돔요소를 인수로 필요로 하므로 useEffect구문 안쪽에서 생성 이때 두번때 인수로 위치 인스턴스 지정
         ref_instMap.current = new kakao.maps.Map(ref_mapFrame.current, {center : latlng}); 
@@ -80,19 +79,32 @@ export default function Map(){
         //Index 상태값 변경시(지점 버튼 클릭해서 지도화면 갱신시) 무조건 트래픽 레이어 제거
         [setTraffic  , setRoadview].forEach(func=> func(false));
         //타입 줌 컨트롤러 인스턴스 반복돌며 인스턴스 위에 바인딩
-        [instType.current, instZoom.current].forEach(inst => ref_instMap.current.addControl(inst));
+        [ref_instType.current, ref_instZoom.current].forEach(inst => ref_instMap.current.addControl(inst));
         //로드뷰 인스턴스에 panoId 연결해 실제 로드뷰 화면 출력하는 호출문
         //clientInstance의 getNearestPanoId 함수 호출해서 현재 위치 인스턴스값 기준으로
         //제일 가까운 panoId값을 찾아서 view 인스턴스에 바인딩해서 로드뷰 화면에 출력
 
          ref_instClient.current.getNearestPanoId(latlng , 50, panoId => ref_instView.current.setPanoId(panoId, latlng));
+     }, [kakao,latlng,markerImg,markerSize,markerPos]   );
+     
 
+    //initPos , createMap을 useEffect 외부로 분리하면 외존성 배열에 등록하라는 권고메시지 또는 이유
+    //이유 : 해당 외부함수는 상태값을 활용해서 동작되는 함수, 해당함수가 외부에서 변경될수도 있다고 인지하기 때문에 해당함수도 의존성 배열에 등록 요청
+    
+    //initPos, createMap을 useEffect의 의존성 배열에 등록시 다시 해당 함수자체에 useCallback 처리하라는 권고문구 도는 이유
+    //
+
+    //Index값이 변경될때마다 지도초기화, 뷰, 마커, 로드뷰인스턴스 생성 및 리사이즈 이벤트 연결
+    useEffect(()=>{
+  
+        //컴포넌트 마운트시 지도생성 함수 호출
+        createMap();
          //윈도우 전역 객체에 resize 이벤트 핸들러 연결 및 제거
          window.addEventListener('resize', initPos);
 
         //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
         return()  => window.removeEventListener('resize' , initPos);     
-    }, [Index]); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
+    }, [Index,createMap , initPos] ); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
 
     //Traffic 값이 반절될 때마다 트래픽 레이어 토글, 상태값에 boolean 값을 담아주고 해당 상태가 변경될때마다 지도 레이어 ON/OFF 메서드 호출
    useEffect(()=>{
