@@ -5,35 +5,19 @@ import useShortenText from '../../hooks/useShortenText';
 import useCombineText from '../../hooks/useCombineText';
 import { Link } from 'react-router-dom';
 import Content from '../common/Content';
+import { useYoutubeQuery } from '../../hooks/useYoutube';
 
 export default function Youtube() {
 	const shortenText = useShortenText();
 	const combineText = useCombineText();
-	const [Vids, setVids] = useState([]);
 
-	const fetchYoutube = useCallback(() => {
-		shortenText('David');
-		const api_key = import.meta.env.VITE_YOUTUBE_API;
-		// const api_key ='AIzaSyCtJt2jnOcXV6eLUZmF2gT6LGa3mSPkpbM';
-		const pid = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
-		const num = 10;
-		const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${pid}&key=${api_key}&maxResults=${num}`;
-
-		fetch(url)
-			.then(data => data.json())
-			.then(json => {
-				console.log(json.items);
-				setVids(json.items);
-			});
-	},[]);
-
-	useEffect(() => {
-		fetchYoutube();
-	}, [fetchYoutube]);
+	//useQuery 기능이 내장된 유튜브 데이터 가져오는 커스텀 훅
+	const result = useYoutubeQuery();
+	console.log(result);
 
 	return (
 		<Layout title={'YOUTUBE'}>
-			<Content delay={1}>
+			{/* <Content delay={1}>
 				{Vids.map((vid, idx) => {
 					return (
 						<article key={idx}>
@@ -48,7 +32,7 @@ export default function Youtube() {
 						</article>
 					);
 				})}
-			</Content>
+			</Content> */}
 		</Layout>
 	);
 }

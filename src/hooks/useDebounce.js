@@ -1,6 +1,24 @@
-export default function UseDebounce(){
-    return(
-    );
+import { useRef, useState } from "react";
+
+export default function useDebounce(state, interval = 500){
+    const [Debounced , setDebounced] = useState(state);
+    const ref_timer = useRef(null);
+
+    //interval 시간이 끝나기도 전에 새로운 state가 전달되면
+    //clearTimout으로 반환값이 초기화
+    //clearTimout으로 timer값을 제거가 아닌 초기화처리하면 연결된 interval 시간도 초기화됨
+    clearTimeout(ref_timer.current);
+
+    //위의 clearTimeout에 의해서 interval 시간이 계속 초기화되면,
+    //연결된 콜백함수의 호출이 계속해서 연기됨(초기화됨)
+    //결국 해당 로직을 통해서 만약 기존 state 변경 요청이 0.5초가 끝나기 전에 추가요청이 들어오면 계속 해당 시간을 초기화시키면서 새로운  state 값 변경을 계속 지연 
+    //0.5초 동안 새로운 요청이 들어오지 않으면 0.5초 뒤에 해당 콜백 함수 호출
+    ref_timer.current = setTimeout(() => {
+        setDebounced(state);
+    },interval)
+
+    // console.log(`debounce {Debounced}`);
+    return Debounced;
 }
 
 /*
