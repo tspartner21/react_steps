@@ -18,6 +18,8 @@ export default function YoutubeDetail(){
         //이전 목록화면에서 제목 클릭시 전달되는 id값을 param로 받아서
         //새로운 요청 url을 만들고 useEffect로 컴포넌트 마운트시 한번만 서버쪽에서 데이터 요청 후 배열값 잔달받음
     useEffect(()=>{
+
+        console.log('detail');
     
         const api_key = import.meta.env.VITE_YOUTUBE_API;
         const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&part=snippet&id=${id}`;
@@ -29,7 +31,7 @@ export default function YoutubeDetail(){
             setYoutubeVid(json.items[0]);
             
         });
-    }, []);
+    }, [id]);
 
     {/* 제목, iframe 영상, 본문 ,날짜순으로 출력 */}
     return(

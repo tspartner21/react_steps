@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState , useCallback} from "react";
+import useThrottle from "../../hooks/useThrottle";
 
 export default function Map(){
     const {kakao} = window;
@@ -54,7 +55,15 @@ export default function Map(){
 
     
     //리사이즈 이벤트에 연결될 화면위치 초기화 함수
-    const initPos = useCallback(() => ref_instMap.current.setCenter(latlng),[latlng]);
+    const initPos = useCallback(() => {
+        console.log('initPos');
+        ref_instMap.current.setCenter(latlng);
+
+
+    },[latlng]);
+
+    //useThrottle 커스텀훅을 통해서 throttle이 적용된 새로운 throttledInitPos라는 함수 반환
+    const throttledInitPos = useThrottle(initPos);
   
 
      //카카오 지도관련 인스턴스들을 생성해서 최종적으로 화면에 렌더링 해주는 함수
@@ -100,11 +109,11 @@ export default function Map(){
         //컴포넌트 마운트시 지도생성 함수 호출
         createMap();
          //윈도우 전역 객체에 resize 이벤트 핸들러 연결 및 제거
-         window.addEventListener('resize', initPos);
+         window.addEventListener('resize', throttledInitPos);
 
         //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
-        return()  => window.removeEventListener('resize' , initPos);     
-    }, [Index,createMap , initPos] ); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
+        return()  => window.removeEventListener('resize' , throttledInitPos);     
+    }, [Index,createMap , throttledInitPos] ); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
 
     //Traffic 값이 반절될 때마다 트래픽 레이어 토글, 상태값에 boolean 값을 담아주고 해당 상태가 변경될때마다 지도 레이어 ON/OFF 메서드 호출
    useEffect(()=>{
@@ -112,7 +121,7 @@ export default function Map(){
         ? ref_instMap.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
         : ref_instMap.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
-   },[Traffic]);
+   },[Traffic, kakao]);
 
  
 
