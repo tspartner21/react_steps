@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import Mask from './Mask';
 import SplitText from './SplitText';
+import { useEffect } from 'react';
 
 export default function Layout({ title, children }) {
 	const { pathname } = useLocation();
@@ -8,6 +9,11 @@ export default function Layout({ title, children }) {
 	
 	//리액트쿼리, 리액트 컨텍스트 (10월 16일 수요일까지)
 	//파이썬 장고 3주 동안 , 프레임웍이라서 그대로 붙여넣으면 동작한다, 게시판 CRUD ,restAPI 리액트로 만든것을 게시글로 등록 (2주반 동안 진행)
+
+	//라우터를 통해 새로운 페이지 컴포넌트 마운트시 강제로 윈도우의 스크롤 위치값을 0으로 초기화
+	useEffect(()=>{
+		window.scrollTo({top:0})
+	},[]);
 
 	return (
 		<>
