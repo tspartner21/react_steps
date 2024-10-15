@@ -44,6 +44,18 @@
     }
 }
 
+
+//메인 전용 헤더 스타일
+.header.main {
+    position: absolute;
+    top : 0px;
+    left : 0px;
+    z-index: 2;
+    border-bottom: none;
+
+}
+
+
 @media screen and (max-width : $tablet){
     .header{
         nav{

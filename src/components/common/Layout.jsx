@@ -6,6 +6,14 @@ import { useEffect } from 'react';
 export default function Layout({ title, children }) {
 	const { pathname } = useLocation();
 	const isDetail = pathname.includes('/youtube/');
+	console.log(pathname);
+
+	let currentClass = '';
+
+	//path명을 통해 레이아웃에 다른 클래스명 적용 (메인페이지에서만 전용 클래스명 적용)
+	if(isDetail) currentClass = 'detail';
+	else if (pathname === '/') currentClass = 'main';
+	else currentClass = title.toLowerCase();
 	
 	//리액트쿼리, 리액트 컨텍스트 (10월 16일 수요일까지)
 	//파이썬 장고 3주 동안 , 프레임웍이라서 그대로 붙여넣으면 동작한다, 게시판 CRUD ,restAPI 리액트로 만든것을 게시글로 등록 (2주반 동안 진행)
@@ -17,10 +25,10 @@ export default function Layout({ title, children }) {
 
 	return (
 		<>
-			<main className={isDetail ? 'detail' : title.toLowerCase()}>
+			<main className={currentClass}>
 			
 
-				<SplitText delay = {0.5}>{title}</SplitText>
+				{pathname !== '/' && <SplitText delay = {0.5}>{title}</SplitText>} 
 			
 				<section>{children}</section>
 
