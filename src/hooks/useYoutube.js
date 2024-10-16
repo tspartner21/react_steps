@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"; 
 
-//아래 커스텀 훅에서 활용될 fetching gkatn
+//아래 커스텀 훅에서 활용될 fetching 함수
 const fetchYoutube = async ({queryKey}) => {
     //useQuery로 전달된 opt객체는 fetching 함수 안쪽의 queryKey로 전달받음
     console.log(queryKey[1]); //{type:'A'}
