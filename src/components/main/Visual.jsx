@@ -4,8 +4,13 @@ import { Swiper, SwiperSlide, useSwiper  } from 'swiper/react';
 //Autoplasy 모듈 가져옴
 import { Autoplay , Pagination } from 'swiper/modules'; 
 import { useState } from 'react';
-import 'swiper/css';
+
 import { FaPlay } from 'react-icons/fa';
+//Virtual 모듈 가져옴
+import { Virtual } from 'swiper/modules';
+import 'swiper/css';
+//virtual css 가져옴
+import 'swiper/css/virtual';
 //Swiper 컴포넌트 안쪽에서 호출할 자동롤링 시작 버튼 컴포넌트
 //해당 swiper 인스턴스를 활용하는 컴포넌트는 무조건 Swiper가 활용되고 있는 부모 컴포넌트 안에서 호출되어야함
 //swiper 인스턴스로부터 다양한 메서드를 호출하기 위해서 useSwiper 커스텀 훅으로 swiper 인스턴스 생성
@@ -41,10 +46,12 @@ export default function Visual() {
 			{/* onSlideChange 이벤트 발생시 내부 순서값 구하는 프로퍼티로 index (loop:x), realIndex (loop: 0) */}
 			<Swiper
 				//autoplay 모듈 연결
-				modules={[Autoplay, Pagination]}
+				//Virtual 모듈 연결(동적 요소 Slide 추가시에는 Virtual 설정 추가해야함)
+				modules={[Autoplay, Pagination, Virtual]}
+				virtual
 				pagination={{ type: 'fraction' }}
-				slidesPerView={3}
-				spaceBetween={100}
+				slidesPerView={1}
+				spaceBetween={0}
 				loop={true}				
 				breakpoints={{
 					1000 : {
@@ -79,7 +86,9 @@ export default function Visual() {
 					data?.map((pic, idx) => {
 						if (idx >= 10) return null;
 						return (
-							<SwiperSlide key={idx}>
+							//virtualIndex 추가 지정
+							<SwiperSlide key={pic} virtualIndex={idx}>
+							
 								{/* swiperSlide요소에는 바로 css모션 스타일 적용 비권장 */}
 								<div className='inner'>
 									<Pic

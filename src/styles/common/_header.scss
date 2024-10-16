@@ -36,12 +36,7 @@
         }
     }
 
-    .btnMenuToggle{
-        font-size : 1.2rem;
-        color : #333;
-        display: none;
 
-    }
 }
 
 
@@ -50,7 +45,7 @@
     position: absolute;
     top : 0px;
     left : 0px;
-    z-index: 2;
+    z-index: 6;
     border-bottom: none;
 
 }
@@ -58,11 +53,9 @@
 
 @media screen and (max-width : $tablet){
     .header{
+     
         nav{
-            display : none;
-        }
-        .btnMenuToggle{
-            display: block;
+            display: none;
         }
     }
 }
