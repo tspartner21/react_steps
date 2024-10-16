@@ -27,6 +27,12 @@
             padding : 5px; 
             background: transparent;
             resize : none;
+
+            //placeholder 요소 안쪽의 텍스트 스타일링
+            &::placeholder{
+                color : orangered;
+                font : 400 0.8rem/1.2 'raleway';
+            }
         }
 
         .upper {

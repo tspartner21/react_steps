@@ -53,21 +53,8 @@ export default function Map(){
     const ref_instMarker = useRef(null);
     const ref_instView = useRef(null);
 
-    
-    //리사이즈 이벤트에 연결될 화면위치 초기화 함수
-    const initPos = useCallback(() => {
-        console.log('initPos');
-        ref_instMap.current.setCenter(latlng);
-
-
-    },[latlng]);
-
-    //useThrottle 커스텀훅을 통해서 throttle이 적용된 새로운 throttledInitPos라는 함수 반환
-    const throttledInitPos = useThrottle(initPos);
-  
-
-     //카카오 지도관련 인스턴스들을 생성해서 최종적으로 화면에 렌더링 해주는 함수
-     const createMap = useCallback(() => {
+    //카카오 지도관련 인스턴스들을 생성해서 최종적으로 화면에 렌더링 해주는 함수
+    const createMap = useCallback(() => {
         //강제로 참조된 지도영역안쪽의 html요소들을 계속 초기화처리(지도 레이어 중첩 문제 해결)지도, 트랙픽,컨트롤러 정보 초기화 함수
         ref_mapFrame.current.innerHTML = '';
         
@@ -85,8 +72,7 @@ export default function Map(){
         ref_instMarker.current.setMap(ref_instMap.current);        
         
 
-        //Index 상태값 변경시(지점 버튼 클릭해서 지도화면 갱신시) 무조건 트래픽 레이어 제거
-        [setTraffic  , setRoadview].forEach(func=> func(false));
+       
         //타입 줌 컨트롤러 인스턴스 반복돌며 인스턴스 위에 바인딩
         [ref_instType.current, ref_instZoom.current].forEach(inst => ref_instMap.current.addControl(inst));
         //로드뷰 인스턴스에 panoId 연결해 실제 로드뷰 화면 출력하는 호출문
@@ -96,14 +82,21 @@ export default function Map(){
          ref_instClient.current.getNearestPanoId(latlng , 50, panoId => ref_instView.current.setPanoId(panoId, latlng));
      }, [kakao,latlng,markerImg,markerSize,markerPos]   );
      
-
-    //initPos , createMap을 useEffect 외부로 분리하면 외존성 배열에 등록하라는 권고메시지 또는 이유
-    //이유 : 해당 외부함수는 상태값을 활용해서 동작되는 함수, 해당함수가 외부에서 변경될수도 있다고 인지하기 때문에 해당함수도 의존성 배열에 등록 요청
     
-    //initPos, createMap을 useEffect의 의존성 배열에 등록시 다시 해당 함수자체에 useCallback 처리하라는 권고문구 도는 이유
-    //
+    const initPos = useCallback(() => {
+        console.log('initPos');
+        ref_instMap.current.setCenter(latlng);
 
-    //Index값이 변경될때마다 지도초기화, 뷰, 마커, 로드뷰인스턴스 생성 및 리사이즈 이벤트 연결
+
+    },[latlng]);
+
+    //useThrottle 커스텀훅을 통해서 throttle이 적용된 새로운 throttledInitPos라는 함수 반환
+    const throttledInitPos = useThrottle(initPos);
+      
+
+	//해당 useEffect에 Index의존성 배열 불필요한 이유
+	//이유 : 의존성배열에 createMap이 등록되어 있고 이미 createMap자체적으로 의존성배열에 Index에 따라 달라지는 값들을 등록되어 있음
+	//따라서 지도를 그리는데 필요한 Index상태값 기반의 정보값이 바뀌면 새롭게 바뀐 내용으로 createMap이 호출되고 그렇지 않으면 메모이제이션 함수 자체 재호출
     useEffect(()=>{
   
         //컴포넌트 마운트시 지도생성 함수 호출
@@ -113,7 +106,7 @@ export default function Map(){
 
         //clean-up 함수 - 컴포넌트 언마운트 한번만 호출
         return()  => window.removeEventListener('resize' , throttledInitPos);     
-    }, [Index,createMap , throttledInitPos] ); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
+    }, [createMap , throttledInitPos] ); //Index 상태값이 변경될 때마다 변경된 순번 상태값으로 지도 인스턴스 다시 생성해서 화면 갱신
 
     //Traffic 값이 반절될 때마다 트래픽 레이어 토글, 상태값에 boolean 값을 담아주고 해당 상태가 변경될때마다 지도 레이어 ON/OFF 메서드 호출
    useEffect(()=>{
@@ -141,7 +134,13 @@ export default function Map(){
                  {ref_info.current.map((el, idx)=>(
                      //동적으로 li 생성 : 클릭한 li의 순서값 idx로 Index 상태값 변경
                      //컴포넌트 재렌더링되면서 변경된 순번의 정보값으로 지도화면 변경됨
-                     <li key={idx} className={idx === Index ? 'on' : '' } onClick = {() => setIndex(idx)}>
+                     <li key={idx} className={idx === Index ? 'on' : '' } 
+                     onClick = {() => {
+                     //실제 각 지점 버튼 클릭시 Traffic, Roadview 상태값 초기화 처리 
+                     setIndex(idx);
+                     setTraffic(false);
+                     setRoadview(false);
+                     }}>
                          {el.title}
                      </li>
                      )

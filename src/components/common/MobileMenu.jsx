@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 
 export default function MobileMenu(){
+           //모바일 메뉴는 초기값 false
+const [MobileOpen, setMobileOpen] = useState(false);
 const {initial , animate , exit, transition} = {
     initial : {x : -300 , opacity : 0},
     animate : { x: 0, opacity : 1},
@@ -21,8 +23,7 @@ useEffect (()=> {
     return () => window.removeEventListener('resize' , closePanel);
 }, [])
 
-         //모바일 메뉴는 초기값 false
-const [MobileOpen, setMobileOpen] = useState(false);
+  
    
     return (
         <>
