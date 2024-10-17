@@ -14,10 +14,6 @@ export default function Gallery() {
 
     const {store ,dispatch } = useGlobalState();
     
-    //순서 1 - 커스텀 훅을 통해 전역관리되는 상태값인 ModalOpen , setModalOpen을 가져옴
-    
-    const { ModalOpen ,setModalOpen } = useGlobalState();
-
     const ref_gallery = useRef(null);
     
     //클릭한 목록요소의 순번을 상태 저장
