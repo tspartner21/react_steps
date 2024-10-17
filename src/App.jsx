@@ -1,7 +1,6 @@
 import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import Home from "./components/main/Home";
-import Intro from "./components/main/Intro";
 
 import Gallery from "./components/sub/Gallery";
 import Members from "./components/sub/Members";
@@ -12,8 +11,10 @@ import Contact from "./components/sub/Contact";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MobileMenu from "./components/common/MobileMenu";
+import { useGlobalState } from "./hooks/useGlobal";
 
 export default function App() {
+	const { MobileOpen } = useGlobalState();
 	const location = useLocation();
 
 
@@ -39,7 +40,7 @@ export default function App() {
 					</Routes>
 				</AnimatePresence>
 
-				<MobileMenu/>
+				{MobileOpen && <MobileMenu/>}
 
 
 				<Footer/>

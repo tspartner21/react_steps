@@ -1,8 +1,11 @@
-import { FaEnvelope, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaBars, FaEnvelope, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 import {Link, useLocation } from 'react-router-dom';
+import { useGlobalState } from '../../hooks/useGlobal';
 
-export default function Heade1r() {
+export default function Header() {
+  const {MobileOpen ,setMobileOpen} = useGlobalState();
+
   const gnbArr = ['members', 'gallery', 'youtube', 'contact', 'posts'];
   const snsArr = [FaEnvelope, FaInstagram, FaYoutube];
 
@@ -13,8 +16,6 @@ export default function Heade1r() {
   
 
   const {pathname} = useLocation();
-
-
 
   return (
     	//메인전용 헤더에 변경되는 부분이 극히 적으므로 기존 header클래스를 베이스로 하고 메인페이지에서는 main클래스만 추가
@@ -48,6 +49,10 @@ export default function Heade1r() {
     
          </ul>
       </nav>
+        {/* 순서 2 - 모바일 호출 */}
+        <span className='btnMobile' onClick={() => setMobileOpen(!MobileOpen)}>
+        <FaBars/>
+      </span>
     
 
      </header>

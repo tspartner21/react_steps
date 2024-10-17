@@ -7,12 +7,15 @@ import { useFlickrQuery } from '../../hooks/useFlickr';
 import { useGlobalState } from '../../hooks/useGlobal';
 
 //미션 - 전역 상태 관리 훅으로 전역 상태관리를 가져온다음 모달창 제어
+
 export default function Gallery() {
-    const globalstate = useGlobalState();
-    console.log(globalstate);
+    
+    //순서 1 - 커스텀 훅을 통해 전역관리되는 상태값인 ModalOpen , setModalOpen을 가져옴
+    
+    const { ModalOpen ,setModalOpen } = useGlobalState();
 
     const ref_gallery = useRef(null);
-    const [ModalOpen, setModalOpen] = useState(false);
+    
     //클릭한 목록요소의 순번을 상태 저장
     const [Index, setIndex] = useState(0);
     //순서 1 : {type : 'mine'}값으로 Type 상태값 초기화
@@ -89,6 +92,7 @@ export default function Gallery() {
                         {Flickr?.length === 0 && <p>해당 검색어의 검색결과가 없습니다.</p>}
 						{Flickr?.map((data, idx) => {
 							return (
+                                //순서 2 - 각 article 요소에 전역에서 가져온  setModalOpen 상태 변경 함수 호출
 								<article
 									key={idx}
 									onClick={() => {
@@ -104,8 +108,10 @@ export default function Gallery() {
 				</Content>
 			</Layout>
 
+            {/* 순서 3 - 상태 변경 함수를 통해서 ModalOpen 전역 상태값 변경시 Modal 컴포넌트 마운트 */}
+
 			{ModalOpen && (
-				<Modal setModalOpen={setModalOpen}>
+				<Modal>
 					<Pic src={`https://live.staticflickr.com/${Flickr[Index].server}/${Flickr[Index].id}_${Flickr[Index].secret}_b.jpg`} shadow />
 				</Modal>
 			)}
