@@ -4,8 +4,12 @@ import Pic from '../common/Pic';
 import Modal from '../common/Modal';
 import Content from '../common/Content';
 import { useFlickrQuery } from '../../hooks/useFlickr';
+import { useGlobalState } from '../../hooks/useGlobal';
 
+//미션 - 전역 상태 관리 훅으로 전역 상태관리를 가져온다음 모달창 제어
 export default function Gallery() {
+    const globalstate = useGlobalState();
+    console.log(globalstate);
 
     const ref_gallery = useRef(null);
     const [ModalOpen, setModalOpen] = useState(false);
