@@ -15,11 +15,11 @@ export default function MobileMenu(){
 // }, [])
 
   
-    const {menuDispatch} = useGlobalState();
+    const {dispatch} = useGlobalState();
    
     return (
         <>
-            <aside className='mobileMenu' onClick={()=>menuDispatch({type : 'CLOSE'})}>MobileMenu </aside>   
+            <aside className='mobileMenu' onClick={()=>dispatch({type : 'CLOSE'})}>MobileMenu </aside>   
         </>
 
     );

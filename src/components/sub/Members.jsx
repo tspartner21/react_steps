@@ -4,7 +4,6 @@ import Pic from '../common/Pic';
 import MaskBox from '../common/MaskBox';
 import MaskText from '../common/MaskText';
 import Content from '../common/Content';
-import { useGlobalState } from '../../hooks/useGlobal';
 
 /*
     참조객체의 가상돔을 담아 활용하는 패턴
@@ -15,7 +14,6 @@ import { useGlobalState } from '../../hooks/useGlobal';
 
 export default function Members() {
 
-    const {menuDispatch} = useGlobalState();
 
 	return (
 		<Layout title={'MEMBERS'}>
@@ -32,7 +30,7 @@ export default function Members() {
 			<Content delay={1}>
                 <article className='ceoBox'>
                     <div className='txt'>
-                        <h2 onClick={()=>menuDispatch({type: 'OPEN'})}>{memberData[0].name}</h2>
+                        <h2>{memberData[0].name}</h2>
                         <p>{memberData[0].position}</p>
                     </div>
                 

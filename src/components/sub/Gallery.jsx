@@ -9,6 +9,10 @@ import { useGlobalState } from '../../hooks/useGlobal';
 //미션 - 전역 상태 관리 훅으로 전역 상태관리를 가져온다음 모달창 제어
 
 export default function Gallery() {
+
+    console.log('gallery');
+
+    const {store ,dispatch } = useGlobalState();
     
     //순서 1 - 커스텀 훅을 통해 전역관리되는 상태값인 ModalOpen , setModalOpen을 가져옴
     
@@ -59,8 +63,8 @@ export default function Gallery() {
     //복잡한 대단위 프로젝트에서 state상태값만 관리하면 되기에 업무 채산성, 효율성이 올라감
     //정리 : 리액트는 HTML, JS작업방식처럼 직접적
     useEffect(()=>{
-        document.body.style.overflow = ModalOpen ? 'hidden' : 'auto';
-    },  [ModalOpen]);
+        document.body.style.overflow = store.isModal ? 'hidden' : 'auto';
+    },  [store.isModal]);
      
     return(
 
@@ -96,7 +100,7 @@ export default function Gallery() {
 								<article
 									key={idx}
 									onClick={() => {
-										setModalOpen(true);
+										dispatch({type : 'OPEN_MODAL'});
 										setIndex(idx);
 									}}>
 									<Pic src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_z.jpg`} className='pic' shadow />
@@ -110,7 +114,7 @@ export default function Gallery() {
 
             {/* 순서 3 - 상태 변경 함수를 통해서 ModalOpen 전역 상태값 변경시 Modal 컴포넌트 마운트 */}
 
-			{ModalOpen && (
+			{store.isModal && (
 				<Modal>
 					<Pic src={`https://live.staticflickr.com/${Flickr[Index].server}/${Flickr[Index].id}_${Flickr[Index].secret}_b.jpg`} shadow />
 				</Modal>

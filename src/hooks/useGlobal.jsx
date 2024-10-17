@@ -7,31 +7,30 @@ import {createContext , useContext , useReducer } from 'react';
 */
 
 //각 리듀서 함수에서 관리할 초기 state 값을 생성
-const initMenuState = {isMenu : false}
+const initMenuState = {isMenu : false , isModal : false};
 
 //위의 초기상태값, 액션타입을 활용해서 전역 상태값을 변경해주는 변형자 함수(리듀서)
-const menuReducer = (state  , action) => {
-    if(action.type == 'OPEN') return {...state , isMenu : true};
-    else if(action.type === 'CLOSE') return {...state, isMenu : false};
-    else if(action.type === 'TOGGLE') return {...state, isMenu : !state.isMenu };
+const reducer = (state  , action) => {
+    if(action.type === 'TOGGLE') return {...state, isMenu : !state.isMenu };
+    if(action.type === 'CLOSE') return {...state, isMenu : false};
+    if (action.type === 'OPEN_MODAL') return {...state , isModal : true };
+    if(action.type === 'CLOSE_MODAL' ) return {...state , isModal : false };
+    
     else return state;
 
 };
 
-
 //모든 자식 컴포넌트들이 사용할 전역 실행 상태 값이 담길 공간 생성
 export const GlobalContext = createContext();
-
-
 
 
 //해당 전역 실행 컨텍스트를 전달할 Wrapping 컴포넌트 생성
 export function GlobalProvider({children}){
     //useReducer를 이용해서 첫번째 인수에는 리듀서 함수,두번째 인수에는 초기 상태 값을 
     //변형된 상태값과 해당 상태를 변경할 수 있는 action 객체를 전달해주는 dispatch 함수를 반환 받음
-    const [MenuState, menuDispatch] = useReducer(menuReducer, initMenuState);
+    const [store, dispatch] = useReducer(reducer, initMenuState);
 
-    return (<GlobalContext.Provider value={{MenuState, menuDispatch }}>{children}</GlobalContext.Provider>);
+    return (<GlobalContext.Provider value={{store, dispatch }}>{children}</GlobalContext.Provider>);
 }
 
 //위에서 전달하는 전역 상태 값을 자식컴포넌트에서 가져오기 위한 실제적인 커스텀 훅 생성
