@@ -1,21 +1,37 @@
-import {createContext , useContext , useState } from 'react';
+import {createContext , useContext , useReducer } from 'react';
 
 /*
-    해당 파일에서 export할 요소 정리
-    state라는 전역 상태값이 담길 공간 생성 후 export
-    Provider - store 에 있는 정보값을 공유할 수 있도록 루트 컴포넌트인 App에 전역 상태값을 전달해주는 Wrapping 컴포넌트
-    전역데이터 사용 커스텀 훅 - 모든 컴포넌트에 전역에 등록된 상태값을 자유롭게 접근할 수 있도록 usecontext를 활용한 커스텀 훅 export
+	컴포넌트로부터 리듀서가 전달받을 action 객체 구조 
+	{ type : '요청타입' , '변경할 객체 정보 값'  }
+
 */
+
+//각 리듀서 함수에서 관리할 초기 state 값을 생성
+const initMenuState = {isMenu : false}
+
+//위의 초기상태값, 액션타입을 활용해서 전역 상태값을 변경해주는 변형자 함수(리듀서)
+const menuReducer = (state  , action) => {
+    if(action.type == 'OPEN') return {...state , isMenu : true};
+    else if(action.type === 'CLOSE') return {...state, isMenu : false};
+    else if(action.type === 'TOGGLE') return {...state, isMenu : !state.isMenu };
+    else return state;
+
+};
+
 
 //모든 자식 컴포넌트들이 사용할 전역 실행 상태 값이 담길 공간 생성
 export const GlobalContext = createContext();
 
 
+
+
 //해당 전역 실행 컨텍스트를 전달할 Wrapping 컴포넌트 생성
 export function GlobalProvider({children}){
-    const [ModalOpen ,setModalOpen] = useState(false);
-    const [MobileOpen , setMobileOpen] = useState(false);
-    return (<GlobalContext.Provider value={{ModalOpen , setModalOpen , MobileOpen , setMobileOpen}}>{children}</GlobalContext.Provider>);
+    //useReducer를 이용해서 첫번째 인수에는 리듀서 함수,두번째 인수에는 초기 상태 값을 
+    //변형된 상태값과 해당 상태를 변경할 수 있는 action 객체를 전달해주는 dispatch 함수를 반환 받음
+    const [MenuState, menuDispatch] = useReducer(menuReducer, initMenuState);
+
+    return (<GlobalContext.Provider value={{MenuState, menuDispatch }}>{children}</GlobalContext.Provider>);
 }
 
 //위에서 전달하는 전역 상태 값을 자식컴포넌트에서 가져오기 위한 실제적인 커스텀 훅 생성
@@ -40,8 +56,8 @@ action (객체) : 리듀서에게 전달할 변경할 데이터 요청값이 있
 - 리액트로 구현되는 대단위 프로젝트에서는 상태(state) 정보의 관리가 중요함
 - 일반 컴포넌트 내부에는 상태값은 해당 컴포넌트 내에서만 사용되는 값이 때문에 설사 문제가 발생을 해도 해당 컴포넌트로 오류범위가 제한됨으로 큰 문제 발생안됨
 - 하지만 전역 상태값은 말 그대로 무수하게 많은 하위컴포넌트들이 해당 전역 상태값을 공유하기 때문에 전역 상태값이 잘못되면 프로젝트 전반에 걸쳐 크리티컬한 오류 발생 가능
-- 전역 상태는 서로다른 컴포넌트에서 데이터를 변경할 수 있는 리스크가 큰 만큼 쉽게 전역 데이터를 변경하지 못하도록 강제하기 위한 툴이 필요
-- 위와 같은 이유로 useReducer 사용 권장 : 개발자들끼리 서로 약속된 방식으로만 전역 상태값을 변경할 수 있도록 강제한 시스템적인 툴
+- 전역 상태는 서로다른 컴포넌트에서 데이터를 변경할 수 있는 리스크가 큰 만큼 쉽게 전역 데이터를 변경하지 못하도록 강제하기 위한 틀이 필요
+- 위와 같은 이유로 useReducer 사용 권장 : 개발자들끼리 서로 약속된 방식으로만 전역 상태값을 변경할 수 있도록 강제한 시스템적인 틀
 
 useReducer를 통해서 전역 데이터를 변경하는 구조적인 흐름
 1. 전역 데이터를 수정할 리듀서 함수 생성

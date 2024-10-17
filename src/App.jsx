@@ -14,7 +14,8 @@ import MobileMenu from "./components/common/MobileMenu";
 import { useGlobalState } from "./hooks/useGlobal";
 
 export default function App() {
-	const { MobileOpen } = useGlobalState();
+	const { MenuState } = useGlobalState();
+	// console.log(MenuState);
 	const location = useLocation();
 
 
@@ -40,7 +41,7 @@ export default function App() {
 					</Routes>
 				</AnimatePresence>
 
-				{MobileOpen && <MobileMenu/>}
+				{MenuState.isMenu && <MobileMenu/>}
 
 
 				<Footer/>

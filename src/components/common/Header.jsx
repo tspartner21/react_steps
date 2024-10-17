@@ -4,7 +4,8 @@ import {Link, useLocation } from 'react-router-dom';
 import { useGlobalState } from '../../hooks/useGlobal';
 
 export default function Header() {
-  const {MobileOpen ,setMobileOpen} = useGlobalState();
+  // const {MobileOpen ,setMobileOpen} = useGlobalState();
+  const {menuDispatch} = useGlobalState();
 
   const gnbArr = ['members', 'gallery', 'youtube', 'contact', 'posts'];
   const snsArr = [FaEnvelope, FaInstagram, FaYoutube];
@@ -50,7 +51,7 @@ export default function Header() {
          </ul>
       </nav>
         {/* 순서 2 -  모바일 호출버튼 클릭시 상태변경함수를 통해서 패널 열고 닫기*/}
-        <span className='btnMobile' onClick={() => setMobileOpen(!MobileOpen)}>
+        <span className='btnMobile' onClick={() => menuDispatch({type : 'TOGGLE'})}>
         <FaBars/>
       </span>
     
