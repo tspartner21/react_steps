@@ -49,7 +49,7 @@ export default function Header() {
     
          </ul>
       </nav>
-        {/* 순서 2 - 모바일 호출 */}
+        {/* 순서 2 -  모바일 호출버튼 클릭시 상태변경함수를 통해서 패널 열고 닫기*/}
         <span className='btnMobile' onClick={() => setMobileOpen(!MobileOpen)}>
         <FaBars/>
       </span>
