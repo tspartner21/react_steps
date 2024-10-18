@@ -6,10 +6,10 @@
     align-items: center;
     border-bottom: 1px solid #ddd;
 
-    h1{
-        font : 700 1.2rem/1 'orbitron';
-        color : #333;
-        letter-spacing : 1px;
+	h1 {
+		font: 700 1.2rem/1 'orbitron';
+		color: rgba(var(--keyRGB), 1);
+		letter-spacing: 1px;
     }
     nav {
         display: flex;
@@ -23,7 +23,7 @@
             color : #888;
 
             li.on{
-                color : #000;
+                color : rgba(var(--keyRGB), 1);
             }
 
         }

@@ -1,11 +1,15 @@
 import { FaBars, FaEnvelope, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 import {Link, useLocation } from 'react-router-dom';
-import { useGlobalState } from '../../hooks/useGlobal';
+import { useZustandStore } from '../../hooks/useZustand';
+
 
 export default function Header() {
-  // const {MobileOpen ,setMobileOpen} = useGlobalState();
-  const {dispatch} = useGlobalState();
+  console.log('header');
+
+  //해당 컴포넌트는 setMenuToggle이라는 전역 상태변경함수가 호출시에만 리렌더링 되도록 선택적 상태 구독 처리
+  const setMenuToggle = useZustandStore(state=>state.setMenuToggle);
+
 
   const gnbArr = ['members', 'gallery', 'youtube', 'contact', 'posts'];
   const snsArr = [FaEnvelope, FaInstagram, FaYoutube];
@@ -51,9 +55,9 @@ export default function Header() {
          </ul>
       </nav>
         {/* 순서 2 -  모바일 호출버튼 클릭시 상태변경함수를 통해서 패널 열고 닫기*/}
-        <span className='btnMobile' onClick={() => dispatch({type : 'TOGGLE'})}>
+        <span className='btnMobile' onClick={setMenuToggle}>
         <FaBars/>
-      </span>
+        </span>
     
 
      </header>

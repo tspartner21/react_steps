@@ -6,17 +6,20 @@ import Gallery from "./components/sub/Gallery";
 import Members from "./components/sub/Members";
 import Posts from "./components/sub/Posts";
 import Youtube from "./components/sub/Youtube";
-import YoutubeDetail from "./components/sub/YoutubeDetail";
 import Contact from "./components/sub/Contact";
 import { Route, Routes, useLocation } from "react-router-dom";
+import YoutubeDetail from "./components/sub/YoutubeDetail";
 import { AnimatePresence } from "framer-motion";
 import MobileMenu from "./components/common/MobileMenu";
-import { useGlobalState } from "./GlobalProvider";
+import { useZustandStore } from "./hooks/useZustand";
+import ColorSelector from './components/common/ColorSelector';
 
 export default function App() {
-	const { store } = useGlobalState();
-	// console.log(MenuState);
+	console.log('app');
 	const location = useLocation();
+
+	//루트 컴포넌트인 App에서 유일하게 사용되는 IsMenu 전역 상태값을 선택적 상태 구독처리
+	const IsMenu  = useZustandStore(state => state.IsMenu);
 
 
 	return (
@@ -41,8 +44,8 @@ export default function App() {
 					</Routes>
 				</AnimatePresence>
 
-				{/* MobileMenu 컴포넌트 언마운트시 사라지는 모션이 끝날때까지 대기시키기 위해 AnimatePresence로 감싸줌 */}
-			<AnimatePresence>{store.isMenu && <MobileMenu />}</AnimatePresence>
+				<ColorSelector />
+				<AnimatePresence>{IsMenu && <MobileMenu />}</AnimatePresence>
 
 
 				<Footer/>

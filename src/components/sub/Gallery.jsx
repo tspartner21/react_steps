@@ -4,7 +4,9 @@ import Pic from '../common/Pic';
 import Modal from '../common/Modal';
 import Content from '../common/Content';
 import { useFlickrQuery } from '../../hooks/useFlickr';
-import { useGlobalState } from '../../hooks/useGlobal';
+import { AnimatePresence } from 'framer-motion';
+import { useZustandStore } from '../../hooks/useZustand';
+
 
 //미션 - 전역 상태 관리 훅으로 전역 상태관리를 가져온다음 모달창 제어
 
@@ -12,8 +14,17 @@ export default function Gallery() {
 
     console.log('gallery');
 
-    const {store ,dispatch } = useGlobalState();
-    
+    //미션 
+    //- 아래와 같은 방식으로 App, Header에 선택적 상태 구독 처리를 해서 Gallery에서 Modal 컴포넌트 호출시 불필요한 App, Header 컴포넌트의 불필요한 리렌더링 방지 처리
+
+    //커스텀 훅에 콜백함수를 인수로 넣어서 자동전달되는 전역 state에서 직접 IsModal 상태값을 추출해서 변수에 담아줌
+    //위와 같은 로직을 통해서 해당 갤러리 컴포넌트 IsModal 값을 제외한 나머지 전역 상태값 변경에는 반응하지 않는 선택적 상태 구독 처리
+    //이슈사항 : 아래와 같이 선택적 상태구독을 했음에도 불구하고 Gallery 컴포넌트는 다른 전역 상태값 변경시 계속 재렌더링됨
+    //이유 : 해당 컴포넌트 자체적으로 선택적 상태구독을 했다고 하더라도 gallery를 감사는 부모컴포넌트가 재렌더링시 자식 컴포넌트 같이 재렌더링됨
+    const IsModal = useZustandStore(state => state.IsModal);
+    const setModalOpen = useZustandStore(state => state.setModalOpen);
+
+
     const ref_gallery = useRef(null);
     
     //클릭한 목록요소의 순번을 상태 저장
@@ -59,8 +70,8 @@ export default function Gallery() {
     //복잡한 대단위 프로젝트에서 state상태값만 관리하면 되기에 업무 채산성, 효율성이 올라감
     //정리 : 리액트는 HTML, JS작업방식처럼 직접적
     useEffect(()=>{
-        document.body.style.overflow = store.isModal ? 'hidden' : 'auto';
-    },  [store.isModal]);
+        document.body.style.overflow = IsModal ? 'hidden' : 'auto';
+    },  [IsModal]);
      
     return(
 
@@ -96,7 +107,7 @@ export default function Gallery() {
 								<article
 									key={idx}
 									onClick={() => {
-										dispatch({type : 'OPEN_MODAL'});
+										setModalOpen();
 										setIndex(idx);
 									}}>
 									<Pic src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_z.jpg`} className='pic' shadow />
@@ -110,11 +121,13 @@ export default function Gallery() {
 
             {/* 순서 3 - 상태 변경 함수를 통해서 ModalOpen 전역 상태값 변경시 Modal 컴포넌트 마운트 */}
 
-			{store.isModal && (
-				<Modal>
-					<Pic src={`https://live.staticflickr.com/${Flickr[Index].server}/${Flickr[Index].id}_${Flickr[Index].secret}_b.jpg`} shadow />
-				</Modal>
-			)}
+			<AnimatePresence>
+                {IsModal && (
+                    <Modal>
+                        <Pic src={`https://live.staticflickr.com/${Flickr[Index].server}/${Flickr[Index].id}_${Flickr[Index].secret}_b.jpg`} shadow />
+                    </Modal>
+                )}
+            </AnimatePresence>
 		</>
     );
 }

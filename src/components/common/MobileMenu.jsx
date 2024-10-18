@@ -1,15 +1,23 @@
 import { useEffect } from "react";
-import { useGlobalState } from "../../hooks/useGlobal";
 import {motion} from 'framer-motion';
 import useThrottle from "../../hooks/useThrottle";
+import { useZustandStore } from '../../hooks/useZustand';
 
-export default function MobileMenu(){
-  
-    const {dispatch} = useGlobalState();
+export default function MobileMenu() {
+	console.log('mobileMenu');
+	const setMenuClose = useZustandStore(state => state.setMenuClose);
+
+    const { initial, animate, exit, transition } = {
+		initial: { x: -300, opacity: 0 },
+		animate: { x: 0, opacity: 1 },
+		exit: { x: -300, opacity: 0 },
+		transition: { duration: 0.5 }
+	};
+
 
     const closeMenu = () => {
         console.log('closeMenu');
-        if(window.innerWidth >= 1000)  dispatch ({type : 'CLOSE'});
+        if(window.innerWidth >= 1000)  setMenuClose();
     };
 
 
@@ -26,7 +34,7 @@ export default function MobileMenu(){
    
     return (
         <>
-            <motion.aside className='mobileMenu' onClick={()=>dispatch({type : 'CLOSE'})}>MobileMenu 
+            <motion.aside className='mobileMenu' onClick={setMenuClose} initial={initial}  animate={animate} exit={exit} transition={transition} >MobileMenu 
                 
             </motion.aside>   
             

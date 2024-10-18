@@ -32,7 +32,8 @@ export default function MaskText({children, duration = 0.5, delay = 0 , color = 
     return(
         //텍스트를 감싸주는 Wrapper
         //해당 모션 컴포넌트의 스타일을 부모컴포넌트에서 호출시 편하게 변경처리 하기 위해서 전달받는 style  객체로 기존 stgle 객체를 덮어줌
-        <div style={{...frameStyle, ...style}}> 
+       
+        <div style={{ ...frameStyle, ...style }} className='maskText'>
         {/*{...frameStyle, ...style} 전개 스타일로 객체 복사하기  */}
         {/* children 으로 전달된 실제 텍스트를 span으로 전달된 요소 */}
           <motion.span
