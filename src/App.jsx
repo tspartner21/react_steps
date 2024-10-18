@@ -11,7 +11,7 @@ import Contact from "./components/sub/Contact";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MobileMenu from "./components/common/MobileMenu";
-import { useGlobalState } from "./hooks/useGlobal";
+import { useGlobalState } from "./GlobalProvider";
 
 export default function App() {
 	const { store } = useGlobalState();
